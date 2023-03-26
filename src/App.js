@@ -16,6 +16,7 @@ import PatientHomePage from "./PatientComponents/PatientHomePage";
 function App() {
   return (
     <div>
+      {/* Git check */}
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
