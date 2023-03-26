@@ -12,6 +12,7 @@ import PatientAppointment from "./PatientComponents/PatientAppointment";
 import PatientWaitingArea from "./PatientComponents/PatientWaitingArea";
 import PatientPrescription from "./PatientComponents/PatientPrescription";
 import PatientHomePage from "./PatientComponents/PatientHomePage";
+import VideoCallPage from "./VideoCallPage/VideoCallPage";
 
 
 //All is well
@@ -37,6 +38,7 @@ function App() {
           />
           <Route path="/doctor" element={<Dashboard />} />
           <Route path="/doctor/prescription" element={<Prescription />} />
+          <Route path="/room/:roomId" element={<VideoCallPage />} />
         </Routes>
       </BrowserRouter>
     </div>
