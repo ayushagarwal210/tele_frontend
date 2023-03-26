@@ -12,6 +12,9 @@ import PatientAppointment from "./PatientComponents/PatientAppointment";
 import PatientWaitingArea from "./PatientComponents/PatientWaitingArea";
 import PatientPrescription from "./PatientComponents/PatientPrescription";
 import PatientHomePage from "./PatientComponents/PatientHomePage";
+
+
+//All is well
 //Here are the components
 function App() {
   return (
