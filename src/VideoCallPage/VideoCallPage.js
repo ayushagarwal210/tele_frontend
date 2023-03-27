@@ -1,6 +1,8 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt'
+// import { ZegoUser } from '@zegocloud/zego-uikit-prebuilt'
+
 
 const VideoCallPage = () => {
     const { roomId } = useParams()
@@ -30,12 +32,21 @@ const VideoCallPage = () => {
             showUserList: false,
             layout: "Auto",
             showLayoutButton: true,
-            showRoomDetailsButton: true,
+            showRoomDetailsButton: false,
+            turnOnMicrophoneWhenJoining: false,
+            showMyCameraToggleButton: true,
+            showLeavingView: false,
+            // onLeaveRoom: (users: ZegoUser[Akanksha]) => {
+            //     Navigate(`/doctor`)
+            // } 
+            // branding: {
+            //     logoURL: `${process.env.PUBLIC_URL}/images/myImage.png` // The branding LOGO URL.
+            // }
         })
     }
     return (
         <div className='room-page'>
-            <div ref={myMeeting} style={{ width: "50vw", height: "50vh" }} />
+            <div ref={myMeeting} style={{ width: "50vh", height: "50vh" }} />
         </div>
     )
 }
