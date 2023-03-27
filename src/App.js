@@ -13,6 +13,7 @@ import PatientWaitingArea from "./PatientComponents/PatientWaitingArea";
 import PatientPrescription from "./PatientComponents/PatientPrescription";
 import PatientHomePage from "./PatientComponents/PatientHomePage";
 import Otplogin from "./Components/Otplogin";
+import Footer from "./Components/Footer";
 
 function App() {
   return (
@@ -21,7 +22,6 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/otp" element={<Otplogin />} />
           <Route path="/patient" element={<PatientHomePage />} />
           <Route
             path="/patient/prescription"
@@ -39,6 +39,7 @@ function App() {
           <Route path="/doctor/prescription" element={<Prescription />} />
         </Routes>
       </BrowserRouter>
+      <Footer />
     </div>
   );
 }
