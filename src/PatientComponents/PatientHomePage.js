@@ -9,8 +9,9 @@ import {
   DropdownButton,
   Dropdown,
 } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+
 import NavbarHome from "../Components/NavbarHome";
+import { useNavigate } from "react-router-dom";
 
 export default function PatientHomePage() {
   const [department, setDepartment] = useState();
@@ -59,7 +60,9 @@ export default function PatientHomePage() {
       });
     // handle form submission logic here
     handleClose();
-  }
+     };
+     
+
   const [selectedDepartment, setSelectedDepartment] = useState("");
 
   const handleSelectChange = (eventKey) => {
@@ -78,6 +81,7 @@ export default function PatientHomePage() {
           <Button variant="secondary" href="/patient/prescription">
             View-History
           </Button>
+
         </div>
       </Container>
       <Modal show={show} onHide={handleClose} className="text-center">
