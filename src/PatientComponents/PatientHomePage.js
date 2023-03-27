@@ -25,6 +25,18 @@ export default function PatientHomePage() {
         console.log(error);
       });
   }
+  async function postData() {
+    await axios
+      .post("http://localhost:9090/appointment/requestAppointment", {
+        appointmentTimestamp: new Date(),
+        patientId: localStorage.getItem("patientDetail"),
+        departmentName: selectedDepartment,
+      })
+      .then((response) => {
+        console.log(response.data);
+      });
+  }
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -33,13 +45,21 @@ export default function PatientHomePage() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const navigate = useNavigate();
-  const handleSubmit = (event) => {
+  async function handleSubmit(event) {
     event.preventDefault();
+    await axios
+      .post("http://localhost:9090/appointment/requestAppointment", {
+        appointmentTimestamp: new Date(),
+        patientId: localStorage.getItem("patientDetail"),
+        departmentName: selectedDepartment,
+      })
+      .then((response) => {
+        console.log(response.data);
+        navigate(`/patient/waitingArea`);
+      });
     // handle form submission logic here
-    navigate(`/patient/waitingArea`);
-    console.log(selectedDepartment);
     handleClose();
-  };
+  }
   const [selectedDepartment, setSelectedDepartment] = useState("");
 
   const handleSelectChange = (eventKey) => {
