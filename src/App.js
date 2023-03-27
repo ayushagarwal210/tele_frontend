@@ -12,7 +12,10 @@ import PatientAppointment from "./PatientComponents/PatientAppointment";
 import PatientWaitingArea from "./PatientComponents/PatientWaitingArea";
 import PatientPrescription from "./PatientComponents/PatientPrescription";
 import PatientHomePage from "./PatientComponents/PatientHomePage";
+import Otplogin from "./Components/Otplogin";
+import Footer from "./Components/Footer";
 import VideoCallPage from "./VideoCallPage/VideoCallPage";
+
 
 
 //All is well
@@ -20,10 +23,10 @@ import VideoCallPage from "./VideoCallPage/VideoCallPage";
 function App() {
   return (
     <div>
+      {/* Git check */}
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/doctor/login" element={<DoctorLogin />} />
           <Route path="/patient" element={<PatientHomePage />} />
           <Route
             path="/patient/prescription"
@@ -36,11 +39,13 @@ function App() {
             path="/patient/registration"
             element={<PatientRegistration />}
           />
+          <Route path="/doctor/login" element={<DoctorLogin />} />
           <Route path="/doctor" element={<Dashboard />} />
           <Route path="/doctor/prescription" element={<Prescription />} />
           <Route path="/room/:roomId" element={<VideoCallPage />} />
         </Routes>
       </BrowserRouter>
+      <Footer />
     </div>
   );
 }
