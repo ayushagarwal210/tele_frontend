@@ -14,7 +14,12 @@ import PatientPrescription from "./PatientComponents/PatientPrescription";
 import PatientHomePage from "./PatientComponents/PatientHomePage";
 import Otplogin from "./Components/Otplogin";
 import Footer from "./Components/Footer";
+import VideoCallPage from "./VideoCallPage/VideoCallPage";
 
+
+
+//All is well
+//Here are the components
 function App() {
   return (
     <div>
@@ -37,6 +42,7 @@ function App() {
           <Route path="/doctor/login" element={<DoctorLogin />} />
           <Route path="/doctor" element={<Dashboard />} />
           <Route path="/doctor/prescription" element={<Prescription />} />
+          <Route path="/room/:roomId" element={<VideoCallPage />} />
         </Routes>
       </BrowserRouter>
       <Footer />
