@@ -14,9 +14,7 @@ import PatientPrescription from "./PatientComponents/PatientPrescription";
 import PatientHomePage from "./PatientComponents/PatientHomePage";
 import Otplogin from "./Components/Otplogin";
 import Footer from "./Components/Footer";
-import VideoCallPage from "./VideoCallPage/VideoCallPage";
-
-
+import VideoCallPage from "./Components/VideoCallPage";
 
 //All is well
 //Here are the components
