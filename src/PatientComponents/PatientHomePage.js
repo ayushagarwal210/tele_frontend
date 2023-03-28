@@ -60,8 +60,7 @@ export default function PatientHomePage() {
       });
     // handle form submission logic here
     handleClose();
-     };
-     
+  }
 
   const [selectedDepartment, setSelectedDepartment] = useState("");
 
@@ -81,7 +80,6 @@ export default function PatientHomePage() {
           <Button variant="secondary" href="/patient/prescription">
             View-History
           </Button>
-
         </div>
       </Container>
       <Modal show={show} onHide={handleClose} className="text-center">
