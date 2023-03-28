@@ -30,6 +30,7 @@ export default function DoctorLogin() {
     axios
       .get(`http://localhost:9090/login/verifyDoctorPhoneNumber/${phoneNumber}`)
       .then((response) => {
+        console.log(phoneNumber)
         setIsValidNumber(response.data);
       })
       .catch((error) => {

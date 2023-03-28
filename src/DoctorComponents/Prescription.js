@@ -8,10 +8,12 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import axios from "axios";
-import DoctorNavbar from "./DoctorNavbar";
+// import DoctorNavbar from "./DoctorNavbar";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Prescription() {
+  const navigate = useNavigate()
   const [inputFeilds, setInputFeilds] = useState([
     { medicine: "", dosage: "" },
   ]);
@@ -88,7 +90,8 @@ function Prescription() {
   const submitHandler = async (event) => {
     // event.preventDefault();
     console.log(doctorDetail.doctorId);
-    await fetchData();
+    // await fetchData();     *****isko active krna h 
+    navigate(`/doctor`)
   };
   // useEffect(() => {
   //   fetchData();
@@ -96,7 +99,7 @@ function Prescription() {
 
   return (
     <>
-      <DoctorNavbar />
+      {/* <DoctorNavbar /> */}
       <div className="container">
         <Form onSubmit={submitHandler}>
           {/* This code will be used later */}

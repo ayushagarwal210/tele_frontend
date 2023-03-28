@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { slide as Menu } from "react-burger-menu";
 import "./Sidebar.css";
+import { useNavigate } from 'react-router-dom'
+
 function Sidebar() {
+  const navigate = useNavigate()
   const patient = [
     {
       id: 1,
@@ -22,6 +25,7 @@ function Sidebar() {
   ];
   const handleSelectChange = (event) => {
     setSelectedPatient(event.target.value);
+    navigate(`/doctor/consultationpage`)
     console.log(selectedPatient);
   };
   const [selectedPatient, setSelectedPatient] = useState();
