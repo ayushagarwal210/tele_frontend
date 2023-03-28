@@ -23,7 +23,7 @@ function Home() {
         </Button>
         <Button
           variant="outline-info"
-          href="/patient/login"
+          href="/patient/logins"
           className="m-2 btn-lg"
         >
           Patient Login

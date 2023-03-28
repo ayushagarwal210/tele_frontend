@@ -16,6 +16,7 @@ import Otplogin from "./Components/Otplogin";
 import Footer from "./Components/Footer";
 import DoctorConsultationPage from "./DoctorComponents/DoctorConsultationPage";
 // import VideoCallPage from "./Components/VideoCallPage";
+import PatientLoginPage from "./PatientComponents/PatientLoginPage";
 
 //All is well
 //Here are the components
@@ -32,6 +33,7 @@ function App() {
             element={<PatientPrescription />}
           />
           <Route path="/patient/login" element={<PateintLogin />} />
+          <Route path="/patient/logins" element={<PatientLoginPage />} />    {/*sahi krna h isse abhi*/}
           {/* <Route path="/patient/appointment" element={<PatientAppointment />} /> */}
           <Route path="/patient/waitingArea" element={<PatientWaitingArea />} />
           <Route
