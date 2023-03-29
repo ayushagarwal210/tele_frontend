@@ -18,10 +18,11 @@ import './PatientStyle.css'
 export default function PatientHomePage() {
   const [department, setDepartment] = useState();
   const [followUp, setFollowUp] = useState();
+  const patientDetails = JSON.parse(localStorage.getItem('patientDetails'))
 
   async function fetchFollowUp() {
     await axios
-      .get(`http://localhost:9090/prescription/getFollowUp/{patientId}`)
+      .get(`http://localhost:9090/prescription/getFollowUp/${patientDetails.patientId}`)
       .then((response) => {
         setFollowUp(response.data);
         console.log(response.data);
@@ -37,6 +38,8 @@ export default function PatientHomePage() {
       .then((response) => {
         setDepartment(response.data);
         console.log(response.data);
+        console.log(patientDetails.patientId)
+        // fetchFollowUp();
       })
       .catch((error) => {
         console.log(error);
@@ -46,7 +49,7 @@ export default function PatientHomePage() {
     await axios
       .post("http://localhost:9090/appointment/requestAppointment", {
         appointmentTimestamp: new Date(),
-        patientId: localStorage.getItem("patientDetail"),
+        patientId: localStorage.getItem("patientDetails"),
         departmentName: selectedDepartment,
       })
       .then((response) => {
@@ -68,12 +71,14 @@ export default function PatientHomePage() {
     await axios
       .post("http://localhost:9090/appointment/requestAppointment", {
         appointmentTimestamp: new Date(),
-        patientId: localStorage.getItem("patientDetail"),
+        patientId:patientDetails.patientId,
         departmentName: selectedDepartment,
       })
       .then((response) => {
         console.log(response.data);
+        localStorage.setItem('appointmentId',response.data)
         navigate(`/patient/waitingArea`);
+        console.log(response.data)
       });
     // handle form submission logic here
     handleClose();

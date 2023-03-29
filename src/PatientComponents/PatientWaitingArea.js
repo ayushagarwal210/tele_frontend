@@ -16,7 +16,7 @@ import './PatientStyle.css'
 
 function PatientWaitingArea() {
   
-  const appointmentId = localStorage.getItem('patientAppointmentId')
+  const appointmentId = localStorage.getItem('appointmentId')
   console.log('appointment',appointmentId)
   const [count, setCount] = useState(0)
   const [roomCode, setRoomCode] = useState("")

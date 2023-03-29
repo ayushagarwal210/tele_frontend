@@ -17,6 +17,7 @@ import Footer from "./Components/Footer";
 import DoctorConsultationPage from "./DoctorComponents/DoctorConsultationPage";
 // import VideoCallPage from "./Components/VideoCallPage";
 import PatientLoginPage from "./PatientComponents/PatientLoginPage";
+import DoctorLoginPage from "./DoctorComponents/DoctorLoginPage";
 
 //All is well
 //Here are the components
@@ -41,6 +42,7 @@ function App() {
             element={<PatientRegistration />}
           />
           <Route path="/doctor/login" element={<DoctorLogin />} />
+          <Route path="/doctor/logins" element={<DoctorLoginPage />} />
           <Route path="/doctor" element={<Dashboard />} />
           <Route path="/doctor/prescription" element={<Prescription />} />
           {/* <Route path="/room/:roomId" element={<VideoCallPage />} /> */}

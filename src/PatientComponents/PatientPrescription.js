@@ -11,13 +11,13 @@ export default function PatientPrescription() {
   const { uid } = useParams();
   const [prescription, setPrescription] = useState([""]);
   const [pdfUrl, setPdfUrl] = useState("");
-  const patientId = localStorage.getItem("patientDetail");
+  const patientDetails = JSON.parse(localStorage.getItem('patientDetails'))
 
-  console.log(patientId);
+  console.log(patientDetails.patientId);
 
   async function fetchData() {
     await axios
-      .get(`http://localhost:9090/prescription/getPrescriptions/${patientId}`)
+      .get(`http://localhost:9090/prescription/getPrescriptions/${patientDetails.patientId}`)
       .then((response) => {
         setPrescription(response.data);
       })
@@ -67,7 +67,7 @@ export default function PatientPrescription() {
           {prescription ? (
             prescription.map((p) => (
               <tr>
-                <td>{p.date}</td>
+                <td>{p.consultationDate}</td>
                 <td>{p.observation}</td>
                 <td>{p.medicine}</td>
                 <td>{p.remark}</td>

@@ -10,10 +10,12 @@ import "react-phone-number-input/style.css";
 import { async } from "@firebase/util";
 import axios from "axios";
 import { useNavigate } from "react-router";
+
 export default function DoctorLogin() {
   const [phoneNumber, setPhoneNumber] = useState();
   const [isValidNumber, setIsValidNumber] = useState(false);
   const [otp, setOtp] = useState();
+
   const generateRecaptcha = () => {
     window.recaptchaVerifier = new RecaptchaVerifier(
       "recaptcha-container",
@@ -26,11 +28,27 @@ export default function DoctorLogin() {
       authentication
     );
   };
+
+  async function fetchDrData() {
+    await axios
+      .get(`http://localhost:9090/doctor/getDoctorByPhoneNumber/${phoneNumber}`)
+      .then((response) => {
+        console.log("phNo", phoneNumber)
+        console.log(response.data)
+        // setPatientDetails(response.data);
+        localStorage.setItem('doctorDetails', JSON.stringify(response.data))
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   useEffect(() => {
     axios
       .get(`http://localhost:9090/login/verifyDoctorPhoneNumber/${phoneNumber}`)
       .then((response) => {
-        console.log(phoneNumber)
+        // console.log(phoneNumber)
         setIsValidNumber(response.data);
       })
       .catch((error) => {
@@ -62,6 +80,7 @@ export default function DoctorLogin() {
       .confirm(otp)
       .then((result) => {
         // User signed in successfully.
+        fetchDrData();
         const user = result.user;
         navigate(`/doctor`);
         console.log(result);
@@ -73,12 +92,13 @@ export default function DoctorLogin() {
   };
   return (
     <div>
-      <div className="card container m-2 p-2">
+      <div className="card container m-2 p-2 login-container">
         <Form onSubmit={sendOTP}>
-          <Row className="mb-3">
+          <Row className="mb-3" style={{ marginLeft: "10px" }}>
             <Form.Label>Phone Number</Form.Label>
             <Form.Group as={Col} controlId="formGridPhoneNumber">
               <PhoneInput
+                style={{ width: "250px" }}
                 placeholder="Enter phone number"
                 value={phoneNumber}
                 onChange={setPhoneNumber}
@@ -89,21 +109,23 @@ export default function DoctorLogin() {
             </Form.Group>
           </Row>
 
-          <Button variant="primary" type="submit">
+          <Button variant="primary" type="submit" style={{ marginLeft: "10px" }}>
             Send OTP
           </Button>
         </Form>
         <Form>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Group className="mb-3" style={{ marginLeft: "10px" }} controlId="formBasicEmail">
             <Form.Label>Enter OTP</Form.Label>
             <Form.Control
+              style={{ width: "250px" }}
               type="email"
               placeholder="Enter OTP"
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
             />
           </Form.Group>
-          <Button variant="primary" type="submit" onClick={verifyOTP}>
+          <Button variant="primary" type="submit" onClick={verifyOTP}
+            style={{ marginLeft: "10px" }}>
             Verify OTP
           </Button>
         </Form>
