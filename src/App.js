@@ -14,7 +14,10 @@ import PatientPrescription from "./PatientComponents/PatientPrescription";
 import PatientHomePage from "./PatientComponents/PatientHomePage";
 import Otplogin from "./Components/Otplogin";
 import Footer from "./Components/Footer";
-import VideoCallPage from "./Components/VideoCallPage";
+import DoctorConsultationPage from "./DoctorComponents/DoctorConsultationPage";
+// import VideoCallPage from "./Components/VideoCallPage";
+import PatientLoginPage from "./PatientComponents/PatientLoginPage";
+import DoctorLoginPage from "./DoctorComponents/DoctorLoginPage";
 
 //All is well
 //Here are the components
@@ -31,6 +34,7 @@ function App() {
             element={<PatientPrescription />}
           />
           <Route path="/patient/login" element={<PateintLogin />} />
+          <Route path="/patient/logins" element={<PatientLoginPage />} />    {/*sahi krna h isse abhi*/}
           {/* <Route path="/patient/appointment" element={<PatientAppointment />} /> */}
           <Route path="/patient/waitingArea" element={<PatientWaitingArea />} />
           <Route
@@ -38,12 +42,14 @@ function App() {
             element={<PatientRegistration />}
           />
           <Route path="/doctor/login" element={<DoctorLogin />} />
+          <Route path="/doctor/logins" element={<DoctorLoginPage />} />
           <Route path="/doctor" element={<Dashboard />} />
           <Route path="/doctor/prescription" element={<Prescription />} />
-          <Route path="/room/:roomId" element={<VideoCallPage />} />
+          {/* <Route path="/room/:roomId" element={<VideoCallPage />} /> */}
+          <Route path="/doctor/consultationpage" element={<DoctorConsultationPage />} />
         </Routes>
       </BrowserRouter>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

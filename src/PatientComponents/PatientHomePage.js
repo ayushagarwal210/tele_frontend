@@ -1,4 +1,5 @@
 import { Menu } from "@mui/material";
+import Table from "react-bootstrap/Table";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
@@ -12,15 +13,33 @@ import {
 
 import NavbarHome from "../Components/NavbarHome";
 import { useNavigate } from "react-router-dom";
+import './PatientStyle.css'
 
 export default function PatientHomePage() {
   const [department, setDepartment] = useState();
+  const [followUp, setFollowUp] = useState();
+  const patientDetails = JSON.parse(localStorage.getItem('patientDetails'))
+
+  async function fetchFollowUp() {
+    await axios
+      .get(`http://localhost:9090/prescription/getFollowUp/${patientDetails.patientId}`)
+      .then((response) => {
+        setFollowUp(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  
   async function fetchData() {
     await axios
       .get(`http://localhost:9090/department/getDepartment`)
       .then((response) => {
         setDepartment(response.data);
         console.log(response.data);
+        console.log(patientDetails.patientId)
+        // fetchFollowUp();
       })
       .catch((error) => {
         console.log(error);
@@ -30,7 +49,7 @@ export default function PatientHomePage() {
     await axios
       .post("http://localhost:9090/appointment/requestAppointment", {
         appointmentTimestamp: new Date(),
-        patientId: localStorage.getItem("patientDetail"),
+        patientId: localStorage.getItem("patientDetails"),
         departmentName: selectedDepartment,
       })
       .then((response) => {
@@ -40,6 +59,7 @@ export default function PatientHomePage() {
 
   useEffect(() => {
     fetchData();
+    fetchFollowUp();
   }, []);
   const [show, setShow] = useState(false);
 
@@ -51,12 +71,14 @@ export default function PatientHomePage() {
     await axios
       .post("http://localhost:9090/appointment/requestAppointment", {
         appointmentTimestamp: new Date(),
-        patientId: localStorage.getItem("patientDetail"),
+        patientId:patientDetails.patientId,
         departmentName: selectedDepartment,
       })
       .then((response) => {
         console.log(response.data);
+        localStorage.setItem('appointmentId',response.data)
         navigate(`/patient/waitingArea`);
+        console.log(response.data)
       });
     // handle form submission logic here
     handleClose();
@@ -71,6 +93,7 @@ export default function PatientHomePage() {
     <>
       <NavbarHome />
       <Container>
+      <div className="patient-main-homepage">
         <div className="border p-3 m-2">
           <h2>Patient DashBoard</h2>
           <p>Welcome to E-Arrogya</p>
@@ -81,6 +104,34 @@ export default function PatientHomePage() {
             View-History
           </Button>
         </div>
+        <div className="follow-up">
+            <h5>Follow-Up</h5>
+            <Table striped bordered hover className="mt-2 container text-center">
+            <thead>
+              <tr>
+                <th>Follow-up date</th>
+                <th>Department</th>
+                <th>DoctorName</th>
+                <th>Observation</th>
+              </tr>
+            </thead>
+            <tbody>
+              {followUp? (
+                followUp.map((p) => (
+                  <tr>
+                    <td>{p.followUpDate}</td>
+                    <td>{p.departmentName}</td>
+                    <td>{p.doctorName}</td>
+                    <td>{p.observation}</td>
+                  </tr>
+                ))
+              ) : (
+                <h1>...</h1>
+              )}
+            </tbody>
+            </Table>
+          </div>
+          </div>
       </Container>
       <Modal show={show} onHide={handleClose} className="text-center">
         <Modal.Header closeButton>

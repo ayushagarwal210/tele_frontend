@@ -1,0 +1,16 @@
+.footer-section {
+    background-color: black;
+    position: bottom;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+.content-1 {
+    padding-block: 10px;
+    color: white;
+    /* float: left; */
+}

@@ -9,7 +9,7 @@ function Home() {
       <div className="m-4 text-center container ">
         <Button
           variant="outline-success"
-          href="/doctor/login"
+          href="/doctor/logins"
           className="m-2 btn-lg"
         >
           Doctor Login
@@ -23,7 +23,7 @@ function Home() {
         </Button>
         <Button
           variant="outline-info"
-          href="/patient/login"
+          href="/patient/logins"
           className="m-2 btn-lg"
         >
           Patient Login
