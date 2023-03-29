@@ -116,7 +116,7 @@ export default function PatientHomePage() {
               </tr>
             </thead>
             <tbody>
-              {followUp ? (
+              {followUp? (
                 followUp.map((p) => (
                   <tr>
                     <td>{p.followUpDate}</td>
