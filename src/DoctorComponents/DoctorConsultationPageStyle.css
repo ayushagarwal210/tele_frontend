@@ -1,0 +1,38 @@
+/* .consultaion-page {
+    margin-top: 5px;
+    margin-left: 20px;
+    display: grid;
+    grid-template-columns: 0.4fr 0.6fr;
+    grid-gap: 20px;
+}
+
+.consultaion-page .right {
+    float: right;
+} */
+
+/* .consultation-page {
+    overflow: hidden;
+    width: 100%;
+}
+
+.consultation-page .left {
+    width: 50vw;
+    overflow: hidden;
+    float: left;
+}
+
+.consultation-page .right {
+    min-width: 50%;    
+    overflow-x: scroll;
+    float: right;
+} */
+
+.doctor-dashboard {
+    display: grid;
+    grid-template-columns: 0.4fr 0.6fr;
+    grid-gap: 20px;
+}
+
+.doctor-dashboard .dr-daily-log{
+    float: right;
+}

@@ -8,10 +8,12 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import axios from "axios";
-import DoctorNavbar from "./DoctorNavbar";
+// import DoctorNavbar from "./DoctorNavbar";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Prescription() {
+  const navigate = useNavigate()
   const [inputFeilds, setInputFeilds] = useState([
     { medicine: "", dosage: "" },
   ]);
@@ -36,22 +38,14 @@ function Prescription() {
     setValue(newValue);
   };
   
-  const getLocalData = () => {
-    const lists = localStorage.getItem("doctorDetail")
-    if(lists){
-      return JSON.parse(lists)
-    }
-    else{
-      return []
-    }
-}
-
-  const [doctorDetail , setDoctorDetail] = useState(getLocalData());
+  const patientId = localStorage.getItem('patientId')
+  console.log(patientId)
+  const doctorDetails = JSON.parse(localStorage.getItem('doctorDeatils'))
   const [observation, setObservation] = useState();
   const [advice, setAdvice] = useState();
   const [medicine, setMedicine] = useState();
-  const [patientId, setPatientId] = useState();
-  const [patientName, setPatientName] = useState();
+  const [patientDetail, setPatientDetail] = useState()
+ 
   const handleChangeObservation = (event) => {
     setObservation(event);
   };
@@ -61,13 +55,21 @@ function Prescription() {
   const handleChangeMedicine = (event) => {
     setMedicine(event);
   };
-  const handleChangePatientId = (event) => {
-    setPatientId(event);
-  };
-  const handleChangePatientName = (event) => {
-    setPatientName(event);
-  };
+  
   const { uid } = useParams();
+  const [count,setCount] = useState(0)
+
+  const fetchPatientDetail = async() =>{
+    await axios.get(`http://localhost:9090/patient/getPatientById/${patientId}`)
+    .then((response)=> {
+       console.log("patientDetail",response.data)
+       setPatientDetail(response.data)
+       setCount(count+1)
+       console.log("patients", patientDetail);
+    }).catch((error) =>{
+        console.log("error:",error)
+    })
+  }
 
   async function fetchData() {
     await axios
@@ -77,8 +79,8 @@ function Prescription() {
         medicine: medicine,
         remark: advice,
         doctorName: "Aakanksha",
-        doctorId: doctorDetail.doctorId,
-        patientName: patientName,
+        doctorId: doctorDetails.doctorId,
+        patientName: patientDetail.firstName,
         patientId: patientId,
       })
       .then((response) => {
@@ -87,16 +89,18 @@ function Prescription() {
   }
   const submitHandler = async (event) => {
     // event.preventDefault();
-    console.log(doctorDetail.doctorId);
-    await fetchData();
+    console.log(doctorDetails.doctorId);
+    await fetchData();      
+    navigate(`/doctor`)
   };
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
+  
+  useEffect(() => {
+    fetchPatientDetail();
+  },[count]);
 
   return (
     <>
-      <DoctorNavbar />
+      {/* <DoctorNavbar /> */}
       <div className="container">
         <Form onSubmit={submitHandler}>
           {/* This code will be used later */}
@@ -118,12 +122,12 @@ function Prescription() {
           })}
           <button onClick={addFields}>Add More..</button> */}
           {/* **************************************** */}
-          <Form.Group className="mb-3" controlId="formBasicEmail">
+           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Patient ID</Form.Label>
             <Form.Control
               name="patientId"
-              value={patientId}
-              onChange={(e) => handleChangePatientId(e.target.value)}
+              defaultValue={patientId}
+              disabled
             />
           </Form.Group>
 
@@ -131,8 +135,8 @@ function Prescription() {
             <Form.Label>Patient Name</Form.Label>
             <Form.Control
               name="patientName"
-              value={patientName}
-              onChange={(e) => handleChangePatientName(e.target.value)}
+              defaultValue ={patientDetail.firstName}
+              disabled
             />
           </Form.Group>
 
@@ -176,8 +180,8 @@ function Prescription() {
 
           <Button variant="primary" type="submit">
             Submit
-          </Button>
-        </Form>
+        </Button>
+        </Form> 
       </div>
     </>
   );
