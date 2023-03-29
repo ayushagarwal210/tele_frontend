@@ -8,6 +8,7 @@ function Sidebar() {
   const [count,setCount]=useState(0);
   const doctorDetails = JSON.parse(localStorage.getItem('doctorDetails'))
   const [queuedPt, setQueuedPt] = useState([])
+  var appointmentId;
   const navigate = useNavigate()
 
   async function fetchQueuedPt() {
@@ -22,47 +23,43 @@ function Sidebar() {
       });
   }
 
-  // async function deletePt(id) {
-  //   console.log("id",id);
-  //   await axios.delete(`http://localhost:9090/appointment/deleteAppointment/${id}`)
-  //   .then((response) => {console.log('Delete successful')
-  //   //  setCount(count+1)
-  //   })
-  //   .catch(error => {
-  //       console.log(`Error: ${error.message}`);
-  //       console.error('There was an error!', error);
-  //   })
-  // }
+  const deletePt = async() => {
+    console.log("inside deletePt",appointmentId);
+    await axios.delete(`http://localhost:9090/appointment/deleteAppointment/${appointmentId}`)
+    .then((response) => {console.log('Delete successful')
+     setCount(count+1)
+     navigate(`/doctor/consultationpage`)
+    })
+    .catch(error => {
+        console.log(`Error: ${error.message}`);
+        console.error('There was an error!', error);
+    })
+  }
 
   useEffect(() => {
     fetchQueuedPt()
-  }, []);
+  }, [count]);
 
-  const deletePatientId =  () => {
-    // setSelectedPatient(event.target.value);
-    // console.log("event:---",event);
-
-    // ;
-    // fetchQueuedPt();
-    navigate(`/doctor/consultationpage`)
-    // console.log(selectedPatient);
-  };
-  // const [selectedPatient, setSelectedPatient] = useState();
+  // const deletePatientId =  async(event) => {
+  //   console.log("event:---",event);
+  //   // fetchQueuedPt();
+  //   await deletePt(event.appointmentId)
+  //   navigate(`/doctor/consultationpage`)
+  // };
+ 
 
   return (
     <Menu>
-      {/* {patient.map((p) => {
-        return (
-          <button className="menu-item" onClick={handleSelectChange}>
-            {p.name}
-          </button>
-        );
-      })} */}
-      {queuedPt.length>0 ? ( 
-        queuedPt.map((p) => {
+      {queuedPt.length? ( 
+        queuedPt.map((p, index) => {
           return (
-            <div>
-              <button className="menu-item" onClick={deletePatientId}>
+            <div key={index}>
+              <button className="menu-item" onClick={()=>{
+                appointmentId = p.appointmentId
+                localStorage.setItem('patientId',p.patientId)
+                console.log("appointmentId: ", appointmentId)
+                deletePt()
+              }}>
               PatientId : {p.patientId}
             </button>
             </div>

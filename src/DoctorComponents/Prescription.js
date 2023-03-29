@@ -38,13 +38,14 @@ function Prescription() {
     setValue(newValue);
   };
   
-  
+  const patientId = localStorage.getItem('patientId')
+  console.log(patientId)
   const doctorDetails = JSON.parse(localStorage.getItem('doctorDeatils'))
   const [observation, setObservation] = useState();
   const [advice, setAdvice] = useState();
   const [medicine, setMedicine] = useState();
-  const [patientId, setPatientId] = useState();
-  const [patientName, setPatientName] = useState();
+  const [patientDetail, setPatientDetail] = useState()
+ 
   const handleChangeObservation = (event) => {
     setObservation(event);
   };
@@ -54,13 +55,21 @@ function Prescription() {
   const handleChangeMedicine = (event) => {
     setMedicine(event);
   };
-  const handleChangePatientId = (event) => {
-    setPatientId(event);
-  };
-  const handleChangePatientName = (event) => {
-    setPatientName(event);
-  };
+  
   const { uid } = useParams();
+  const [count,setCount] = useState(0)
+
+  const fetchPatientDetail = async() =>{
+    await axios.get(`http://localhost:9090/patient/getPatientById/${patientId}`)
+    .then((response)=> {
+       console.log("patientDetail",response.data)
+       setPatientDetail(response.data)
+       setCount(count+1)
+       console.log("patients", patientDetail);
+    }).catch((error) =>{
+        console.log("error:",error)
+    })
+  }
 
   async function fetchData() {
     await axios
@@ -71,7 +80,7 @@ function Prescription() {
         remark: advice,
         doctorName: "Aakanksha",
         doctorId: doctorDetails.doctorId,
-        patientName: patientName,
+        patientName: patientDetail.firstName,
         patientId: patientId,
       })
       .then((response) => {
@@ -81,12 +90,13 @@ function Prescription() {
   const submitHandler = async (event) => {
     // event.preventDefault();
     console.log(doctorDetails.doctorId);
-    // await fetchData();     *****isko active krna h 
+    await fetchData();      
     navigate(`/doctor`)
   };
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
+  
+  useEffect(() => {
+    fetchPatientDetail();
+  },[count]);
 
   return (
     <>
@@ -112,12 +122,12 @@ function Prescription() {
           })}
           <button onClick={addFields}>Add More..</button> */}
           {/* **************************************** */}
-          <Form.Group className="mb-3" controlId="formBasicEmail">
+           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Patient ID</Form.Label>
             <Form.Control
               name="patientId"
-              value={patientId}
-              onChange={(e) => handleChangePatientId(e.target.value)}
+              defaultValue={patientId}
+              disabled
             />
           </Form.Group>
 
@@ -125,8 +135,8 @@ function Prescription() {
             <Form.Label>Patient Name</Form.Label>
             <Form.Control
               name="patientName"
-              value={patientName}
-              onChange={(e) => handleChangePatientName(e.target.value)}
+              defaultValue ={patientDetail.firstName}
+              disabled
             />
           </Form.Group>
 
@@ -170,8 +180,8 @@ function Prescription() {
 
           <Button variant="primary" type="submit">
             Submit
-          </Button>
-        </Form>
+        </Button>
+        </Form> 
       </div>
     </>
   );

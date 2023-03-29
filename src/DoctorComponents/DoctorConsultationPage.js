@@ -7,9 +7,9 @@ import { useNavigate } from 'react-router-dom'
 const DoctorConsultationPage = () => {
     const doctorDetail = localStorage.getItem('doctorDetail')
     const navigate = useNavigate()
-    const handleConsultation = () => {
-        navigate(`/doctor`)
-    }
+    // const handleConsultation = () => {
+    //     navigate(`/doctor`)
+    // }
     return (
         <>
             <DoctorNavbar />
