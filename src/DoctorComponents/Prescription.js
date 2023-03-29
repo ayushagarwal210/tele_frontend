@@ -38,17 +38,8 @@ function Prescription() {
     setValue(newValue);
   };
   
-  const getLocalData = () => {
-    const lists = localStorage.getItem("doctorDetail")
-    if(lists){
-      return JSON.parse(lists)
-    }
-    else{
-      return []
-    }
-}
-
-  const [doctorDetail , setDoctorDetail] = useState(getLocalData());
+  
+  const doctorDetails = JSON.parse(localStorage.getItem('doctorDeatils'))
   const [observation, setObservation] = useState();
   const [advice, setAdvice] = useState();
   const [medicine, setMedicine] = useState();
@@ -79,7 +70,7 @@ function Prescription() {
         medicine: medicine,
         remark: advice,
         doctorName: "Aakanksha",
-        doctorId: doctorDetail.doctorId,
+        doctorId: doctorDetails.doctorId,
         patientName: patientName,
         patientId: patientId,
       })
@@ -89,7 +80,7 @@ function Prescription() {
   }
   const submitHandler = async (event) => {
     // event.preventDefault();
-    console.log(doctorDetail.doctorId);
+    console.log(doctorDetails.doctorId);
     // await fetchData();     *****isko active krna h 
     navigate(`/doctor`)
   };

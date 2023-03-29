@@ -7,9 +7,13 @@ import DoctorNavbar from "./DoctorNavbar";
 import Table from "react-bootstrap/Table";
 import './DoctorConsultationPageStyle.css'
 import { useNavigate } from "react-router-dom";
+import { dialogTitleClasses } from "@mui/material";
 
 function Dashboard() {
-
+  console.log("data",new Date())
+  
+  const doctorDetails = JSON.parse(localStorage.getItem('doctorDetails'))
+  console.log("doctorId",doctorDetails.doctorId)
   const [dailyLog, setDailyLog] = useState();
   const { uid } = useParams();
   const [info, setInfo] = useState();
@@ -19,9 +23,10 @@ function Dashboard() {
 
   async function fetchDailyLog() {
     await axios
-      .get(`dailylogapi`)
+      .get(`http://localhost:9090/doctor/doctorDailyLog/${doctorDetails.doctorId}`)
       .then((response) => {
         setDailyLog(response.data);
+        console.log(dailyLog)
         console.log(response.data);
       })
       .catch((error) => {
@@ -29,19 +34,19 @@ function Dashboard() {
       });
   }
 
-  async function fetchData() {
-    await axios
-      .get(`http://localhost:9090/doctor/getdoctorByEmail/${uid}`)
-      .then((response) => {
-        setInfo(response.data);
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+  // async function fetchData() {
+  //   await axios
+  //     .get(`http://localhost:9090/doctor/getdoctorByEmail/${uid}`)
+  //     .then((response) => {
+  //       setInfo(response.data);
+  //       console.log(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }
   useEffect(() => {
-    fetchData();
+    // fetchData();
     fetchDailyLog();
   }, []);
   // console.log(info);
@@ -68,20 +73,18 @@ function Dashboard() {
                 <th>Observation</th>
               </tr>
             </thead>
-            {/* <tbody>
+            <tbody>
               {dailyLog ? (
                 dailyLog.map((p) => (
                   <tr>
-                    <td>{p.dailyLogDate}</td>
-                    <td>{p.departmentName}</td>
-                    <td>{p.doctorName}</td>
+                    <td>{p.patientId}</td>
                     <td>{p.observation}</td>
                   </tr>
                 ))
               ) : (
                 <h1>...</h1>
               )}
-            </tbody> */}
+            </tbody>
             </Table>
         </div>
       </div>
