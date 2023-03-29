@@ -10,39 +10,22 @@ import axios from "axios";
 import NavbarHome from "../Components/NavbarHome";
 import { FormControl } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { authentication } from "../firebase";
+import Otplogin from "../Components/Otplogin";
+import { useLocation, useParams } from "react-router-dom";
 // import DatePicker from 'react-datepicker';
 // import Swal from 'sweetalert2'
 
-const PatientRegistration = () => {
-  // const [ptRegistration,setPtRegistration] = useState({
-  //     title: "",
-  //     firstName: "",
-  //     lastName: "",
-  //     gender: "",
-  //     date: "",
-  //     email: "",
-  //     phoneno: "",
-  //     address: "",
-  //     city: "",
-  //     state: "",
-  //     pincode: ""
-  // })
-
-  // const handleChange = (e) => {
-  //     const name = e.target.name
-  //     const value = e.target.value
-  //     console.log(name,value)
-
-  //     setPtRegistration({...ptRegistration, [name]: value })
-  // }
+const PatientRegistration = ({ phoneNo }) => {
+  console.log(phoneNo);
   const [title, setTitle] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [gender, setGender] = useState("");
   const [date, setDate] = useState("");
   const [email, setEmail] = useState("");
-  const [phoneNo, setPhoneNo] = useState("");
+  // const [phoneNo, setPhoneNo] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   // const [state,setState] = useState("")
@@ -74,10 +57,6 @@ const PatientRegistration = () => {
     setEmail(event.target.value);
   };
 
-  // const handleChange_phoneno = event => {
-  //     setPhoneNo(event.target.value);
-  // };
-
   const handleChange_address = (event) => {
     setAddress(event.target.value);
   };
@@ -85,10 +64,6 @@ const PatientRegistration = () => {
   const handleChange_city = (event) => {
     setCity(event.target.value);
   };
-
-  // const handleChange_state = event => {
-  //     setState(event.target.value);
-  // };
 
   const handleChange_pincode = (event) => {
     setPinCode(event.target.value);
@@ -98,24 +73,7 @@ const PatientRegistration = () => {
     setPassword(event.target.value);
   };
 
-  // const handleChange_btn = async (event) => {
-  //     event.preventDefault(); //important to not reload page
-  // }
-
   async function fetchData() {
-    // console.log({
-    //   title: title,
-    //   firstName: firstName,
-    //   lastName: lastName,
-    //   gender: gender,
-    //   phoneNo: phoneNo,
-    //   email: email,
-    //   dob: date,
-    //   addr: address,
-    //   city: city,
-    //   password: password,
-    //   pincode: pinCode,
-    // })
     await axios
       .post("http://localhost:9090/patient/register", {
         title: title,
@@ -140,13 +98,10 @@ const PatientRegistration = () => {
     await fetchData();
     navigate(`/`);
   };
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
 
   return (
     <>
-      <NavbarHome />
+      {/* <NavbarHome /> */}
       <div className="container card p-4 mt-2">
         <h2 style={{ justifyItems: "center" }} className="text-center">
           Patient Registration
@@ -229,12 +184,12 @@ const PatientRegistration = () => {
               <PhoneInput
                 placeholder="Enter phone number"
                 value={phoneNo}
-                onChange={setPhoneNo}
+                // onChange={setPhoneNo}
                 name="phoneno"
+                disabled
               />
             </Form.Group>
           </Row>
-
           <Row className="mb-3">
             <Form.Group as={Col} controlId="formGridAddress">
               <Form.Control
@@ -257,13 +212,6 @@ const PatientRegistration = () => {
                 name="city"
               />
             </Form.Group>
-            {/* <Form.Group as={Col} controlId="formGridState">
-                        <Form.Control type="text" 
-                        value={state}
-                        onChange={handleChange_state} 
-                        placeholder=" State"
-                        name="state"/>
-                    </Form.Group> */}
             <Form.Group as={Col} controlId="formGridPincode">
               <Form.Control
                 type="text"
@@ -295,13 +243,6 @@ const PatientRegistration = () => {
               >
                 Register
               </Button>
-              {/* <Button
-                variant="primary"
-                type="submit"
-                className="sendbutton reset"
-              >
-                Reset
-              </Button> */}
             </Form.Group>
           </Row>
         </Form>

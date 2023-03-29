@@ -14,13 +14,13 @@ function Home() {
         >
           Doctor Login
         </Button>
-        <Button
+        {/* <Button
           variant="outline-warning"
           href="/patient/registration"
           className="m-2 btn-lg"
         >
           Patient Registration
-        </Button>
+        </Button> */}
         <Button
           variant="outline-info"
           href="/patient/login"

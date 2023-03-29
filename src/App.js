@@ -21,29 +21,37 @@ import VideoCallPage from "./Components/VideoCallPage";
 function App() {
   return (
     <div>
-      {/* Git check */}
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/patient" element={<PatientHomePage />} />
-          <Route
-            path="/patient/prescription"
-            element={<PatientPrescription />}
-          />
-          <Route path="/patient/login" element={<PateintLogin />} />
-          {/* <Route path="/patient/appointment" element={<PatientAppointment />} /> */}
-          <Route path="/patient/waitingArea" element={<PatientWaitingArea />} />
-          <Route
-            path="/patient/registration"
-            element={<PatientRegistration />}
-          />
-          <Route path="/doctor/login" element={<DoctorLogin />} />
-          <Route path="/doctor" element={<Dashboard />} />
-          <Route path="/doctor/prescription" element={<Prescription />} />
-          <Route path="/room/:roomId" element={<VideoCallPage />} />
-        </Routes>
-      </BrowserRouter>
-      <Footer />
+      <div style={{ position: "relative", minHeight: "100vh" }}>
+        <div style={{ paddingBottom: "50px" }}>
+          {/* Content of the page */}
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/patient" element={<PatientHomePage />} />
+              <Route
+                path="/patient/prescription"
+                element={<PatientPrescription />}
+              />
+              <Route path="/patient/login" element={<PateintLogin />} />
+              {/* <Route path="/patient/appointment" element={<PatientAppointment />} /> */}
+              <Route
+                path="/patient/waitingArea"
+                element={<PatientWaitingArea />}
+              />
+              {/* <Route
+                path="/patient/registration"
+                element={<PatientRegistration />}
+              /> */}
+
+              <Route path="/doctor/login" element={<DoctorLogin />} />
+              <Route path="/doctor" element={<Dashboard />} />
+              <Route path="/doctor/prescription" element={<Prescription />} />
+              <Route path="/room/:roomId" element={<VideoCallPage />} />
+            </Routes>
+          </BrowserRouter>
+        </div>
+        <Footer />
+      </div>
     </div>
   );
 }
