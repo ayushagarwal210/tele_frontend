@@ -39,21 +39,36 @@ function Prescription() {
   };
   
   const patientId = localStorage.getItem('patientId')
-  console.log(patientId)
-  const doctorDetails = JSON.parse(localStorage.getItem('doctorDeatils'))
-  const [observation, setObservation] = useState();
-  const [advice, setAdvice] = useState();
-  const [medicine, setMedicine] = useState();
-  const [patientDetail, setPatientDetail] = useState()
+  // console.log(patientId)
+  const doctorDetails = JSON.parse(localStorage.getItem('doctorDetails'))
+  // console.log("doctor id", doctorDetails.doctorId);
+  const [observation, setObservation] = useState("");
+  const [advice, setAdvice] = useState("");
+  const [medicine, setMedicine] = useState("");
+  const [patientDetail, setPatientDetail] = useState([
+    {
+    "patientId": patientId,
+    "firstName": "",
+    "lastName": "",
+    }
+  ])
+
+  // console.log(medicine)
  
   const handleChangeObservation = (event) => {
-    setObservation(event);
+    // console.log("observation event",event.target.value)
+    setObservation(event.target.value);
+    // console.log("observation",observation)
   };
   const handleChangeAdvice = (event) => {
-    setAdvice(event);
+    // console.log("advice event",event.target.value)
+    setAdvice(event.target.value);
+    // console.log("advice",advice)
   };
   const handleChangeMedicine = (event) => {
-    setMedicine(event);
+    // console.log(event.target.value)
+    setMedicine(event.target.value);
+    // console.log("medicine",medicine)
   };
   
   const { uid } = useParams();
@@ -64,7 +79,6 @@ function Prescription() {
     .then((response)=> {
        console.log("patientDetail",response.data)
        setPatientDetail(response.data)
-       setCount(count+1)
        console.log("patients", patientDetail);
     }).catch((error) =>{
         console.log("error:",error)
@@ -72,37 +86,62 @@ function Prescription() {
   }
 
   async function fetchData() {
+
+    const data = {
+      consultationDate: new Date(),
+      observation: observation,
+      medicine: medicine,
+      remark: advice,
+      doctorName: "Aakanksha",
+      doctorId: doctorDetails.doctorId,
+      patientName: patientDetail.firstName,
+      patientId: patientId
+    }
+
+    // console.log(data);
     await axios
-      .post("http://localhost:9090/prescription/addPrescription", {
-        date: new Date(),
-        observation: observation,
-        medicine: medicine,
-        remark: advice,
-        doctorName: "Aakanksha",
-        doctorId: doctorDetails.doctorId,
-        patientName: patientDetail.firstName,
-        patientId: patientId,
-      })
+      .post("http://localhost:9090/prescription/addPrescription", data)
       .then((response) => {
+        console.log("inside post prescription api")
         console.log(response.data);
+      }).catch((error)=>{
+        console.log("error",error)
       });
   }
   const submitHandler = async (event) => {
-    // event.preventDefault();
-    console.log(doctorDetails.doctorId);
-    await fetchData();      
-    navigate(`/doctor`)
+    event.preventDefault();
+    const data = {
+      consultationDate: new Date(),
+      observation: observation,
+      medicine: medicine,
+      remark: advice,
+      doctorName: "Aakanksha",
+      doctorId: doctorDetails.doctorId,
+      patientName: patientDetail.firstName,
+      patientId: patientId
+    }
+
+    console.log("form updated data", data);
+    await axios
+      .post("http://localhost:9090/prescription/addPrescription", data)
+      .then((response) => {
+        console.log("inside post prescription api")
+        console.log(response.data);
+        navigate(`/doctor`)
+      }).catch((error)=>{
+        console.log("error",error)
+      });   
   };
   
   useEffect(() => {
     fetchPatientDetail();
-  },[count]);
+  },[]);
 
   return (
     <>
       {/* <DoctorNavbar /> */}
       <div className="container">
-        <Form onSubmit={submitHandler}>
+        <Form onSubmit={(event) => {submitHandler(event)}}>
           {/* This code will be used later */}
           {/* ********************************** */}
           {/* {inputFeilds.map((input,index)=>{
@@ -136,7 +175,7 @@ function Prescription() {
             <Form.Control
               name="patientName"
               defaultValue ={patientDetail.firstName}
-              disabled
+              readOnly
             />
           </Form.Group>
 
@@ -145,8 +184,13 @@ function Prescription() {
             <Form.Control
               name="medicine"
               value={medicine}
-              onChange={(e) => handleChangeMedicine(e.target.value)}
+              onChange={handleChangeMedicine}
             />
+            {/* <input 
+              type="text"
+              onChange={(e) => setMedicine(e.target.value)}
+              value={medicine}
+            /> */}
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -154,7 +198,7 @@ function Prescription() {
             <Form.Control
               name="observation"
               value={observation}
-              onChange={(e) => handleChangeObservation(e.target.value)}
+              onChange={handleChangeObservation}
             />
           </Form.Group>
 
@@ -163,7 +207,7 @@ function Prescription() {
             <Form.Control
               name="advice"
               value={advice}
-              onChange={(e) => handleChangeAdvice(e.target.value)}
+              onChange={handleChangeAdvice}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmail">

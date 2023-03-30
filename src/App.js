@@ -18,18 +18,24 @@ import DoctorConsultationPage from "./DoctorComponents/DoctorConsultationPage";
 // import VideoCallPage from "./Components/VideoCallPage";
 import PatientLoginPage from "./PatientComponents/PatientLoginPage";
 import DoctorLoginPage from "./DoctorComponents/DoctorLoginPage";
+
+import DoctorVideoCallPage from "./DoctorComponents/DoctorVideoCallPage"
+import PatientVideoCallPage from "./PatientComponents/PatientVideoCallPage"
+import { UserProvider } from "./providers/Provider";
+
 import PatientUpdateProfile from "./PatientComponents/PatientUpdateProfile";
 import DoctorProfile from "./DoctorComponents/DoctorProfile";
 
-//All is well
-//Here are the components
+
 function App() {
   return (
     <div>
+
       <div style={{ position: "relative", minHeight: "100vh" }}>
         <div style={{ paddingBottom: "50px" }}>
           {/* Content of the page */}
           <BrowserRouter>
+          <UserProvider>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/patient" element={<PatientHomePage />} />
@@ -42,6 +48,7 @@ function App() {
                 element={<PatientUpdateProfile />}
               />
               <Route path="/patient/login" element={<PateintLogin />} />
+               <Route path="/patient/patientvdocall" element={<PatientVideoCallPage />} />
               {/* <Route path="/patient/appointment" element={<PatientAppointment />} /> */}
               <Route
                 path="/patient/waitingArea"
@@ -52,7 +59,7 @@ function App() {
                 path="/patient/registration"
                 element={<PatientRegistration />}
               /> */}
-
+ <Route path="/doctor/doctorvdocall" element={<DoctorVideoCallPage />} />
               <Route path="/doctor/logins" element={<DoctorLoginPage />} />
               <Route path="/doctor/login" element={<DoctorLogin />} />
               <Route path="/doctor" element={<Dashboard />} />
@@ -64,10 +71,12 @@ function App() {
                 element={<DoctorConsultationPage />}
               />
             </Routes>
+             </UserProvider>
           </BrowserRouter>
         </div>
         <Footer />
       </div>
+
     </div>
   );
 }
