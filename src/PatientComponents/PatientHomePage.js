@@ -18,7 +18,22 @@ import "./PatientStyle.css";
 export default function PatientHomePage() {
   const [department, setDepartment] = useState();
   const [followUp, setFollowUp] = useState();
-  const patientDetails = JSON.parse(localStorage.getItem("patientDetails"));
+
+  const patientDetails = JSON.parse(localStorage.getItem('patientDetails'))
+  const [prevAppointment, setPrevAppointment] = useState('false')
+  const [count, setCount] = useState(0)
+
+  const fetchPrevAppointment = async () => {
+    await axios.get(`http://localhost:9090/appointment/checkAppointments/${patientDetails.patientId}`)
+      .then((response) => {
+        console.log("response", response.data)
+        setPrevAppointment(response.data)
+        console.log('prevAppointment', prevAppointment)
+      }).catch((error) => {
+        console.log("error", error)
+      })
+  }
+
 
   async function fetchFollowUp() {
     await axios
@@ -47,6 +62,20 @@ export default function PatientHomePage() {
         console.log(error);
       });
   }
+
+  const deletePrevAppointment = async () => {
+    console.log("inside deletePt", patientDetails.patientId);
+    await axios.delete(`http://localhost:9090/appointment/deleteAppointmentByPatientId/${patientDetails.patientId}`)
+      .then((response) => {
+        console.log('Delete successful')
+        setCount(count + 1)
+      })
+      .catch(error => {
+        console.log(`Error: ${error.message}`);
+        console.error('There was an error!', error);
+      })
+  }
+
   async function postData() {
     await axios
       .post("http://localhost:9090/appointment/requestAppointment", {
@@ -61,13 +90,15 @@ export default function PatientHomePage() {
 
   useEffect(() => {
     fetchData();
+    fetchPrevAppointment();
     fetchFollowUp();
-  }, []);
+  }, [count]);
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const navigate = useNavigate();
+
   async function handleSubmit(event) {
     event.preventDefault();
     await axios
@@ -78,7 +109,9 @@ export default function PatientHomePage() {
       })
       .then((response) => {
         console.log(response.data);
-        localStorage.setItem("appointmentId", response.data);
+
+        localStorage.setItem('appointmentId', response.data)
+
         navigate(`/patient/waitingArea`);
         console.log(response.data);
       });
@@ -97,22 +130,27 @@ export default function PatientHomePage() {
       <Container>
         <div className="patient-main-homepage">
           <div className="border p-3 m-2">
+
             <h2>
               {patientDetails.title} {patientDetails.firstName}{" "}
               {patientDetails.lastName}
             </h2>
             <p>Welcome to E-Arrogya</p>
-            <Button
-              variant="secondary"
-              className="mr-3 m-2"
-              onClick={handleShow}
-            >
-              Apply for consultation
-            </Button>
+            {prevAppointment ?
+              <Button variant="danger" className="mr-3 m-2" onClick={deletePrevAppointment}>
+                Revoke Previous Consultation
+              </Button>
+              : <Button variant="success" className="mr-3 m-2" onClick={handleShow}>
+                Apply for consultation
+              </Button>
+
+            }
+
             <Button variant="secondary" href="/patient/prescription">
               View-History
             </Button>
           </div>
+
           <div className="follow-up card m-2 p-3">
             <h5>Follow-Up</h5>
             <Table
@@ -121,6 +159,7 @@ export default function PatientHomePage() {
               hover
               className="mt-2 container text-center "
             >
+
               <thead>
                 <tr>
                   <th>Follow-up date</th>
