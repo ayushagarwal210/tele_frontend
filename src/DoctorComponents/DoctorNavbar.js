@@ -1,20 +1,19 @@
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
 import React from "react";
 import Sidebar from "./Sidebar";
+import Container from "react-bootstrap/Container";
+import { Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router-dom";
 import { Button } from "@mui/material";
 
 function DoctorNavbar() {
-  const doctorHome = () => {
-    window.location.replace(`/doctor`);
-  };
-  const doctorPrescription = () => {
-    window.location.replace(`/doctor/prescription`);
+  const logout = () => {
+    localStorage.removeItem("doctorDetails");
+    window.location.href = "/doctor/logins";
   };
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="dark" variant="dark">
       <div className="App" id="outer-container">
         <Sidebar
           pageWrapId={"page-wrap"}
@@ -23,16 +22,21 @@ function DoctorNavbar() {
         <div id="page-wrap" />
       </div>
       <Container>
-        <Navbar.Brand href="/">TeleConsultation</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link onClick={doctorHome}>Home</Nav.Link>
-            {/* <Nav.Link href="/doctor/login">Login</Nav.Link> */}
-            <Nav.Link onClick={doctorPrescription}>Prescription</Nav.Link>
-            <Button variant="primary" type="submit" href="/">Logout</Button>
-          </Nav>
-        </Navbar.Collapse>
+        <Navbar.Brand href="/doctor">TeleConsultation</Navbar.Brand>
+        <Nav className="me-2">
+          <Nav.Link href="/doctor">Home</Nav.Link>
+          <Nav.Link href="/doctor/prescription">Prescription</Nav.Link>
+          {/* <Nav.Link href="/patient/waitingArea">OPD</Nav.Link> */}
+          <NavDropdown
+            alignRight
+            title={<span>{<FontAwesomeIcon icon={faUser} />} Hello</span>}
+            id="basic-nav-dropdown"
+          >
+            <NavDropdown.Item href="/doctor/profile">Profile</NavDropdown.Item>
+            <NavDropdown.Divider />
+            <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
+          </NavDropdown>
+        </Nav>
       </Container>
     </Navbar>
   );

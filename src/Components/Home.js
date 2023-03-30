@@ -5,7 +5,6 @@ import NavbarHome from "./NavbarHome";
 function Home() {
   return (
     <>
-      <NavbarHome />
       <div className="m-4 text-center container ">
         <Button
           variant="outline-success"
