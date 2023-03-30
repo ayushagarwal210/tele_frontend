@@ -8,29 +8,20 @@ import "react-phone-number-input/style.css";
 // import "./styleRegistration.css";
 import axios from "axios";
 import NavbarHome from "../Components/NavbarHome";
-import { FormControl } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import { authentication } from "../firebase";
-import Otplogin from "../Components/Otplogin";
-import { useLocation, useParams } from "react-router-dom";
-// import DatePicker from 'react-datepicker';
-// import Swal from 'sweetalert2'
 
-const PatientRegistration = ({ phoneNo }) => {
-  console.log(phoneNo);
-  const [title, setTitle] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [gender, setGender] = useState("");
-  const [date, setDate] = useState("");
-  const [email, setEmail] = useState("");
-  // const [phoneNo, setPhoneNo] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  // const [state,setState] = useState("")
-  const [pinCode, setPinCode] = useState("");
-  const [password, setPassword] = useState("");
+function PatientUpdateProfile() {
+  const patientDetails = JSON.parse(localStorage.getItem("patientDetails"));
+  const [title, setTitle] = useState(patientDetails.title);
+  const [firstName, setFirstName] = useState(patientDetails.firstName);
+  const [lastName, setLastName] = useState(patientDetails.lastName);
+  const [gender, setGender] = useState(patientDetails.gender);
+  const [date, setDate] = useState(patientDetails.dob);
+  const [email, setEmail] = useState(patientDetails.email);
+  const [phoneNo, setPhoneNo] = useState(patientDetails.phoneNo);
+  const [address, setAddress] = useState(patientDetails.addr);
+  const [city, setCity] = useState(patientDetails.city);
+  const [pinCode, setPinCode] = useState(patientDetails.pincode);
 
   const handleChange_title = (event) => {
     setTitle(event.target.value);
@@ -49,7 +40,6 @@ const PatientRegistration = ({ phoneNo }) => {
   };
 
   const handleChange_date = (event) => {
-    console.log(event.target.value);
     setDate(event.target.value);
   };
 
@@ -69,13 +59,12 @@ const PatientRegistration = ({ phoneNo }) => {
     setPinCode(event.target.value);
   };
 
-  const handleChange_password = (event) => {
-    setPassword(event.target.value);
-  };
-
-  async function fetchData() {
+  const patientId = patientDetails.patientId;
+  const navigate = useNavigate();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     await axios
-      .post("http://localhost:9090/patient/register", {
+      .put(`http://localhost:9090/patient/updatePatient/${patientId}`, {
         title: title,
         firstName: firstName,
         lastName: lastName,
@@ -88,22 +77,18 @@ const PatientRegistration = ({ phoneNo }) => {
         pincode: pinCode,
       })
       .then((response) => {
-        console.log(response.data);
+        console.log(JSON.stringify(response.data));
+        localStorage.setItem("patientDetails", JSON.stringify(response.data));
+        navigate("/patient");
       });
-  }
-  const navigate = useNavigate();
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    await fetchData();
-    navigate(`/`);
   };
 
   return (
     <>
-      {/* <NavbarHome /> */}
+      <NavbarHome />
       <div className="container card p-4 mt-2">
         <h2 style={{ justifyItems: "center" }} className="text-center">
-          Patient Registration
+          Update Profile
         </h2>
         <br />
         <Form>
@@ -230,7 +215,7 @@ const PatientRegistration = ({ phoneNo }) => {
                 className="sendbutton register"
                 onClick={handleSubmit}
               >
-                Register
+                Update
               </Button>
             </Form.Group>
           </Row>
@@ -238,6 +223,6 @@ const PatientRegistration = ({ phoneNo }) => {
       </div>
     </>
   );
-};
+}
 
-export default PatientRegistration;
+export default PatientUpdateProfile;

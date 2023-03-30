@@ -13,16 +13,18 @@ import {
 
 import NavbarHome from "../Components/NavbarHome";
 import { useNavigate } from "react-router-dom";
-import './PatientStyle.css'
+import "./PatientStyle.css";
 
 export default function PatientHomePage() {
   const [department, setDepartment] = useState();
   const [followUp, setFollowUp] = useState();
-  const patientDetails = JSON.parse(localStorage.getItem('patientDetails'))
+  const patientDetails = JSON.parse(localStorage.getItem("patientDetails"));
 
   async function fetchFollowUp() {
     await axios
-      .get(`http://localhost:9090/prescription/getFollowUp/${patientDetails.patientId}`)
+      .get(
+        `http://localhost:9090/prescription/getFollowUp/${patientDetails.patientId}`
+      )
       .then((response) => {
         setFollowUp(response.data);
         console.log(response.data);
@@ -31,14 +33,14 @@ export default function PatientHomePage() {
         console.log(error);
       });
   }
-  
+
   async function fetchData() {
     await axios
       .get(`http://localhost:9090/department/getDepartment`)
       .then((response) => {
         setDepartment(response.data);
         console.log(response.data);
-        console.log(patientDetails.patientId)
+        console.log(patientDetails.patientId);
         // fetchFollowUp();
       })
       .catch((error) => {
@@ -71,14 +73,14 @@ export default function PatientHomePage() {
     await axios
       .post("http://localhost:9090/appointment/requestAppointment", {
         appointmentTimestamp: new Date(),
-        patientId:patientDetails.patientId,
+        patientId: patientDetails.patientId,
         departmentName: selectedDepartment,
       })
       .then((response) => {
         console.log(response.data);
-        localStorage.setItem('appointmentId',response.data)
+        localStorage.setItem("appointmentId", response.data);
         navigate(`/patient/waitingArea`);
-        console.log(response.data)
+        console.log(response.data);
       });
     // handle form submission logic here
     handleClose();
@@ -93,45 +95,57 @@ export default function PatientHomePage() {
     <>
       <NavbarHome />
       <Container>
-      <div className="patient-main-homepage">
-        <div className="border p-3 m-2">
-          <h2>Patient DashBoard</h2>
-          <p>Welcome to E-Arrogya</p>
-          <Button variant="secondary" className="mr-3 m-2" onClick={handleShow}>
-            Apply for consultation
-          </Button>
-          <Button variant="secondary" href="/patient/prescription">
-            View-History
-          </Button>
-        </div>
-        <div className="follow-up">
+        <div className="patient-main-homepage">
+          <div className="border p-3 m-2">
+            <h2>
+              {patientDetails.title} {patientDetails.firstName}{" "}
+              {patientDetails.lastName}
+            </h2>
+            <p>Welcome to E-Arrogya</p>
+            <Button
+              variant="secondary"
+              className="mr-3 m-2"
+              onClick={handleShow}
+            >
+              Apply for consultation
+            </Button>
+            <Button variant="secondary" href="/patient/prescription">
+              View-History
+            </Button>
+          </div>
+          <div className="follow-up card m-2 p-3">
             <h5>Follow-Up</h5>
-            <Table striped bordered hover className="mt-2 container text-center">
-            <thead>
-              <tr>
-                <th>Follow-up date</th>
-                <th>Department</th>
-                <th>DoctorName</th>
-                <th>Observation</th>
-              </tr>
-            </thead>
-            <tbody>
-              {followUp? (
-                followUp.map((p) => (
-                  <tr>
-                    <td>{p.followUpDate}</td>
-                    <td>{p.departmentName}</td>
-                    <td>{p.doctorName}</td>
-                    <td>{p.observation}</td>
-                  </tr>
-                ))
-              ) : (
-                <h1>...</h1>
-              )}
-            </tbody>
+            <Table
+              striped
+              bordered
+              hover
+              className="mt-2 container text-center "
+            >
+              <thead>
+                <tr>
+                  <th>Follow-up date</th>
+                  <th>Department</th>
+                  <th>DoctorName</th>
+                  <th>Observation</th>
+                </tr>
+              </thead>
+              <tbody>
+                {followUp ? (
+                  followUp.map((p) => (
+                    <tr>
+                      <td>{p.followUpDate}</td>
+                      <td>{p.departmentName}</td>
+                      <td>{p.doctorName}</td>
+                      <td>{p.observation}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <h1>...</h1>
+                )}
+              </tbody>
             </Table>
           </div>
-          </div>
+        </div>
       </Container>
       <Modal show={show} onHide={handleClose} className="text-center">
         <Modal.Header closeButton>
