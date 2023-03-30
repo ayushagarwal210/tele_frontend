@@ -13,11 +13,12 @@ import {
 
 import NavbarHome from "../Components/NavbarHome";
 import { useNavigate } from "react-router-dom";
-import './PatientStyle.css'
+import "./PatientStyle.css";
 
 export default function PatientHomePage() {
   const [department, setDepartment] = useState();
   const [followUp, setFollowUp] = useState();
+
   const patientDetails = JSON.parse(localStorage.getItem('patientDetails'))
   const [prevAppointment, setPrevAppointment] = useState('false')
   const [count, setCount] = useState(0)
@@ -33,9 +34,12 @@ export default function PatientHomePage() {
       })
   }
 
+
   async function fetchFollowUp() {
     await axios
-      .get(`http://localhost:9090/prescription/getFollowUp/${patientDetails.patientId}`)
+      .get(
+        `http://localhost:9090/prescription/getFollowUp/${patientDetails.patientId}`
+      )
       .then((response) => {
         setFollowUp(response.data);
         console.log(response.data);
@@ -51,7 +55,7 @@ export default function PatientHomePage() {
       .then((response) => {
         setDepartment(response.data);
         console.log(response.data);
-        console.log(patientDetails.patientId)
+        console.log(patientDetails.patientId);
         // fetchFollowUp();
       })
       .catch((error) => {
@@ -105,9 +109,11 @@ export default function PatientHomePage() {
       })
       .then((response) => {
         console.log(response.data);
+
         localStorage.setItem('appointmentId', response.data)
+
         navigate(`/patient/waitingArea`);
-        console.log(response.data)
+        console.log(response.data);
       });
     // handle form submission logic here
     handleClose();
@@ -124,7 +130,11 @@ export default function PatientHomePage() {
       <Container>
         <div className="patient-main-homepage">
           <div className="border p-3 m-2">
-            <h2>Patient DashBoard</h2>
+
+            <h2>
+              {patientDetails.title} {patientDetails.firstName}{" "}
+              {patientDetails.lastName}
+            </h2>
             <p>Welcome to E-Arrogya</p>
             {prevAppointment ?
               <Button variant="danger" className="mr-3 m-2" onClick={deletePrevAppointment}>
@@ -135,13 +145,21 @@ export default function PatientHomePage() {
               </Button>
 
             }
+
             <Button variant="secondary" href="/patient/prescription">
               View-History
             </Button>
           </div>
-          <div className="follow-up">
+
+          <div className="follow-up card m-2 p-3">
             <h5>Follow-Up</h5>
-            <Table striped bordered hover className="mt-2 container text-center">
+            <Table
+              striped
+              bordered
+              hover
+              className="mt-2 container text-center "
+            >
+
               <thead>
                 <tr>
                   <th>Follow-up date</th>

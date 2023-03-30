@@ -33,10 +33,7 @@ export default function DoctorLogin() {
     await axios
       .get(`http://localhost:9090/doctor/getDoctorByPhoneNumber/${phoneNumber}`)
       .then((response) => {
-        console.log("phNo", phoneNumber)
-        console.log(response.data)
-        // setPatientDetails(response.data);
-        localStorage.setItem('doctorDetails', JSON.stringify(response.data))
+        localStorage.setItem("doctorDetails", JSON.stringify(response.data));
         console.log(response.data);
       })
       .catch((error) => {
@@ -48,7 +45,6 @@ export default function DoctorLogin() {
     axios
       .get(`http://localhost:9090/login/verifyDoctorPhoneNumber/${phoneNumber}`)
       .then((response) => {
-        // console.log(phoneNumber)
         setIsValidNumber(response.data);
       })
       .catch((error) => {
@@ -109,12 +105,20 @@ export default function DoctorLogin() {
             </Form.Group>
           </Row>
 
-          <Button variant="primary" type="submit" style={{ marginLeft: "10px" }}>
+          <Button
+            variant="primary"
+            type="submit"
+            style={{ marginLeft: "10px" }}
+          >
             Send OTP
           </Button>
         </Form>
         <Form>
-          <Form.Group className="mb-3" style={{ marginLeft: "10px" }} controlId="formBasicEmail">
+          <Form.Group
+            className="mb-3"
+            style={{ marginLeft: "10px" }}
+            controlId="formBasicEmail"
+          >
             <Form.Label>Enter OTP</Form.Label>
             <Form.Control
               style={{ width: "250px" }}
@@ -124,8 +128,12 @@ export default function DoctorLogin() {
               onChange={(e) => setOtp(e.target.value)}
             />
           </Form.Group>
-          <Button variant="primary" type="submit" onClick={verifyOTP}
-            style={{ marginLeft: "10px" }}>
+          <Button
+            variant="primary"
+            type="submit"
+            onClick={verifyOTP}
+            style={{ marginLeft: "10px" }}
+          >
             Verify OTP
           </Button>
         </Form>
