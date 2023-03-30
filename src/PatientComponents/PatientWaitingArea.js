@@ -23,7 +23,7 @@ function PatientWaitingArea() {
   const navigate = useNavigate()
 
   const handleJoinRoom = useCallback(() => {
-    navigate(`/room/${roomCode}`);
+    navigate(`/patient/patientvdocall`);
   }, [navigate, roomCode])
 
   useEffect(() => {
@@ -51,11 +51,6 @@ function PatientWaitingArea() {
         } 
         </div>
         <div className="vdo">
-          <input type="text"
-            value={roomCode}
-            onChange={e => setRoomCode(e.target.value)}
-            required
-            placeholder='Enter Room Code' />
           <Button variant="secondary" onClick={handleJoinRoom}>
             Call Doctor
           </Button>

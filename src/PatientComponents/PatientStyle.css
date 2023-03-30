@@ -179,3 +179,12 @@
 
 }
 
+.room-page {
+    /* margin-top: 60px; */
+    justify-content: center;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-gap: 20px;
+}
+
+

@@ -3,6 +3,7 @@ import Prescription from './Prescription'
 import './DoctorConsultationPageStyle.css'
 import DoctorNavbar from './DoctorNavbar'
 import { useNavigate } from 'react-router-dom'
+import DoctorVideoCallPage from './DoctorVideoCallPage'
 
 const DoctorConsultationPage = () => {
     const doctorDetail = localStorage.getItem('doctorDetail')
@@ -17,9 +18,9 @@ const DoctorConsultationPage = () => {
                 <div className='left'>
                     <Prescription />
                 </div>
-                {/* <div className='right'>
-                    <VideoCallPage />
-                </div> */}
+                <div className='right'>
+                    <DoctorVideoCallPage />
+                </div>
                 {/* <button onClick={handleConsultation}>End Consultation</button> */}
             </div>
         </>

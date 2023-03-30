@@ -18,17 +18,20 @@ import DoctorConsultationPage from "./DoctorComponents/DoctorConsultationPage";
 // import VideoCallPage from "./Components/VideoCallPage";
 import PatientLoginPage from "./PatientComponents/PatientLoginPage";
 import DoctorLoginPage from "./DoctorComponents/DoctorLoginPage";
+import DoctorVideoCallPage from "./DoctorComponents/DoctorVideoCallPage"
+import PatientVideoCallPage from "./PatientComponents/PatientVideoCallPage"
+import { UserProvider } from "./providers/Provider";
 
-//All is well
-//Here are the components
 function App() {
   return (
     <div>
       {/* Git check */}
       <BrowserRouter>
+      <UserProvider>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/patient" element={<PatientHomePage />} />
+          <Route path="/patient/patientvdocall" element={<PatientVideoCallPage />} />
           <Route
             path="/patient/prescription"
             element={<PatientPrescription />}
@@ -43,11 +46,13 @@ function App() {
           />
           <Route path="/doctor/login" element={<DoctorLogin />} />
           <Route path="/doctor/logins" element={<DoctorLoginPage />} />
+          <Route path="/doctor/doctorvdocall" element={<DoctorVideoCallPage />} />
           <Route path="/doctor" element={<Dashboard />} />
           <Route path="/doctor/prescription" element={<Prescription />} />
           {/* <Route path="/room/:roomId" element={<VideoCallPage />} /> */}
           <Route path="/doctor/consultationpage" element={<DoctorConsultationPage />} />
         </Routes>
+        </UserProvider>
       </BrowserRouter>
       {/* <Footer /> */}
     </div>
