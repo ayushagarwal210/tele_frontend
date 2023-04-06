@@ -14,26 +14,41 @@ import {
 import NavbarHome from "../Components/NavbarHome";
 import { useNavigate } from "react-router-dom";
 import "./PatientStyle.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCalendar,
+  faCalendarCheck,
+  faCancel,
+  faHistory,
+  faHome,
+  faHomeUser,
+  faHospitalUser,
+  faRemove,
+  faRemoveFormat,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function PatientHomePage() {
   const [department, setDepartment] = useState();
   const [followUp, setFollowUp] = useState();
 
-  const patientDetails = JSON.parse(localStorage.getItem('patientDetails'))
-  const [prevAppointment, setPrevAppointment] = useState('false')
-  const [count, setCount] = useState(0)
+  const patientDetails = JSON.parse(localStorage.getItem("patientDetails"));
+  const [prevAppointment, setPrevAppointment] = useState("false");
+  const [count, setCount] = useState(0);
 
   const fetchPrevAppointment = async () => {
-    await axios.get(`http://localhost:9090/appointment/checkAppointments/${patientDetails.patientId}`)
+    await axios
+      .get(
+        `http://localhost:9090/appointment/checkAppointments/${patientDetails.patientId}`
+      )
       .then((response) => {
-        console.log("response", response.data)
-        setPrevAppointment(response.data)
-        console.log('prevAppointment', prevAppointment)
-      }).catch((error) => {
-        console.log("error", error)
+        console.log("response", response.data);
+        setPrevAppointment(response.data);
+        console.log("prevAppointment", prevAppointment);
       })
-  }
-
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
 
   async function fetchFollowUp() {
     await axios
@@ -65,16 +80,19 @@ export default function PatientHomePage() {
 
   const deletePrevAppointment = async () => {
     console.log("inside deletePt", patientDetails.patientId);
-    await axios.delete(`http://localhost:9090/appointment/deleteAppointmentByPatientId/${patientDetails.patientId}`)
+    await axios
+      .delete(
+        `http://localhost:9090/appointment/deleteAppointmentByPatientId/${patientDetails.patientId}`
+      )
       .then((response) => {
-        console.log('Delete successful')
-        setCount(count + 1)
+        console.log("Delete successful");
+        setCount(count + 1);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(`Error: ${error.message}`);
-        console.error('There was an error!', error);
-      })
-  }
+        console.error("There was an error!", error);
+      });
+  };
 
   async function postData() {
     await axios
@@ -110,7 +128,7 @@ export default function PatientHomePage() {
       .then((response) => {
         console.log(response.data);
 
-        localStorage.setItem('appointmentId', response.data)
+        localStorage.setItem("appointmentId", response.data);
 
         navigate(`/patient/waitingArea`);
         console.log(response.data);
@@ -124,42 +142,53 @@ export default function PatientHomePage() {
   const handleSelectChange = (eventKey) => {
     setSelectedDepartment(eventKey);
   };
+
   return (
     <>
       <NavbarHome />
       <Container>
         <div className="patient-main-homepage">
           <div className="border p-3 m-2">
-
             <h2>
               {patientDetails.title} {patientDetails.firstName}{" "}
               {patientDetails.lastName}
             </h2>
-            <p>Welcome to E-Arrogya</p>
-            {prevAppointment ?
-              <Button variant="danger" className="mr-3 m-2" onClick={deletePrevAppointment}>
-                Revoke Previous Consultation
+            <p>{<FontAwesomeIcon icon={faHomeUser} />} Welcome to E-Arrogya</p>
+            {prevAppointment ? (
+              <Button
+                variant="danger"
+                className="mr-3 m-2"
+                onClick={deletePrevAppointment}
+              >
+                {<FontAwesomeIcon icon={faCancel} />} Revoke Previous
+                Consultation
               </Button>
-              : <Button variant="success" className="mr-3 m-2" onClick={handleShow}>
-                Apply for consultation
+            ) : (
+              <Button
+                variant="success"
+                className="mr-3 m-2"
+                onClick={handleShow}
+              >
+                {<FontAwesomeIcon icon={faHospitalUser} />} Apply for
+                consultation
               </Button>
-
-            }
+            )}
 
             <Button variant="secondary" href="/patient/prescription">
-              View-History
+              {<FontAwesomeIcon icon={faHistory} />} View-History
             </Button>
           </div>
 
           <div className="follow-up card m-2 p-3">
-            <h5>Follow-Up</h5>
+            <h5 className="text-center">
+              Follow-Up {<FontAwesomeIcon icon={faCalendarCheck} />}
+            </h5>
             <Table
               striped
               bordered
               hover
               className="mt-2 container text-center "
             >
-
               <thead>
                 <tr>
                   <th>Follow-up date</th>

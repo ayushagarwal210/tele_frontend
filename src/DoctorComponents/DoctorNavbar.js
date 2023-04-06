@@ -3,7 +3,16 @@ import Sidebar from "./Sidebar";
 import Container from "react-bootstrap/Container";
 import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEdit,
+  faFilePrescription,
+  faHome,
+  faHospitalUser,
+  faPrescription,
+  faPrescriptionBottleMedical,
+  faSignOut,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router-dom";
 import { Button } from "@mui/material";
 
@@ -24,17 +33,24 @@ function DoctorNavbar() {
       <Container>
         <Navbar.Brand href="/doctor">TeleConsultation</Navbar.Brand>
         <Nav className="me-2">
-          <Nav.Link href="/doctor">Home</Nav.Link>
-          <Nav.Link href="/doctor/prescription">Prescription</Nav.Link>
-          {/* <Nav.Link href="/patient/waitingArea">OPD</Nav.Link> */}
+          <Nav.Link href="/doctor">
+            <FontAwesomeIcon icon={faHome} /> Home
+          </Nav.Link>
+          <Nav.Link href="doctor/consultationpage">
+            {<FontAwesomeIcon icon={faHospitalUser} />} OPD
+          </Nav.Link>
           <NavDropdown
             alignRight
             title={<span>{<FontAwesomeIcon icon={faUser} />} Hello</span>}
             id="basic-nav-dropdown"
           >
-            <NavDropdown.Item href="/doctor/profile">Profile</NavDropdown.Item>
+            <NavDropdown.Item href="/doctor/profile">
+              {<FontAwesomeIcon icon={faEdit} />} Profile
+            </NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
+            <NavDropdown.Item onClick={logout}>
+              {<FontAwesomeIcon icon={faSignOut} />} Logout
+            </NavDropdown.Item>
           </NavDropdown>
         </Nav>
       </Container>
