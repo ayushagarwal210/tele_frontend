@@ -48,9 +48,9 @@ export default function PatientPrescription() {
   return (
     <>
       <NavbarHome />
-      <a href="/">
+      <a href="/patient">
         <Button variant="primary" type="submit">
-          Logout
+          Back
         </Button>
       </a>
       <Table striped bordered hover className="mt-2 container text-center">

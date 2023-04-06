@@ -22,6 +22,7 @@ export default function PatientHomePage() {
   const patientDetails = JSON.parse(localStorage.getItem('patientDetails'))
   const [prevAppointment, setPrevAppointment] = useState('false')
   const [count, setCount] = useState(0)
+  
 
   const fetchPrevAppointment = async () => {
     await axios.get(`http://localhost:9090/appointment/checkAppointments/${patientDetails.patientId}`)
