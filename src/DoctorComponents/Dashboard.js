@@ -8,6 +8,8 @@ import Table from "react-bootstrap/Table";
 import "./DoctorConsultationPageStyle.css";
 import { useNavigate } from "react-router-dom";
 import { dialogTitleClasses } from "@mui/material";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDatabase, faUserDoctor } from "@fortawesome/free-solid-svg-icons";
 
 function Dashboard() {
   console.log("data", new Date());
@@ -56,7 +58,7 @@ function Dashboard() {
       {doctorDetails ? (
         <div className="doctor-dashboard">
           <div className="container text-center m-3">
-            <h2>Welcome</h2>
+            <h2>{<FontAwesomeIcon icon={faUserDoctor} />} Welcome</h2>
             {/* <Button onClick={generatePrescription(this, info.doctorId)}>
           Prescription
         </Button> */}
@@ -65,7 +67,9 @@ function Dashboard() {
             </h1>
           </div>
           <div className="dr-daily-log card m-2 p-3">
-            <h1 className="text-center">Daily-log</h1>
+            <h1 className="text-center">
+              {<FontAwesomeIcon icon={faDatabase} />} Daily-log
+            </h1>
             <Table
               striped
               bordered

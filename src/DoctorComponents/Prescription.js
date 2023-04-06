@@ -13,7 +13,8 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 function Prescription() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [followUp, setFollowUp] = useState(false);
   const [inputFeilds, setInputFeilds] = useState([
     { medicine: "", dosage: "" },
   ]);
@@ -32,29 +33,29 @@ function Prescription() {
     data.splice(index, 1);
     setInputFeilds(data);
   };
-  const [value, setValue] = React.useState(dayjs(new Date()));
+  const [value, setValue] = useState(null);
 
   const handleChangeTime = (newValue) => {
     setValue(newValue);
   };
-  
-  const patientId = localStorage.getItem('patientId')
+
+  const patientId = localStorage.getItem("patientId");
   // console.log(patientId)
-  const doctorDetails = JSON.parse(localStorage.getItem('doctorDetails'))
+  const doctorDetails = JSON.parse(localStorage.getItem("doctorDetails"));
   // console.log("doctor id", doctorDetails.doctorId);
   const [observation, setObservation] = useState("");
   const [advice, setAdvice] = useState("");
   const [medicine, setMedicine] = useState("");
   const [patientDetail, setPatientDetail] = useState([
     {
-    "patientId": patientId,
-    "firstName": "",
-    "lastName": "",
-    }
-  ])
+      patientId: patientId,
+      firstName: "",
+      lastName: "",
+    },
+  ]);
 
   // console.log(medicine)
- 
+
   const handleChangeObservation = (event) => {
     // console.log("observation event",event.target.value)
     setObservation(event.target.value);
@@ -70,23 +71,24 @@ function Prescription() {
     setMedicine(event.target.value);
     // console.log("medicine",medicine)
   };
-  
-  const { uid } = useParams();
-  const [count,setCount] = useState(0)
 
-  const fetchPatientDetail = async() =>{
-    await axios.get(`http://localhost:9090/patient/getPatientById/${patientId}`)
-    .then((response)=> {
-       console.log("patientDetail",response.data)
-       setPatientDetail(response.data)
-       console.log("patients", patientDetail);
-    }).catch((error) =>{
-        console.log("error:",error)
-    })
-  }
+  const { uid } = useParams();
+  const [count, setCount] = useState(0);
+
+  const fetchPatientDetail = async () => {
+    await axios
+      .get(`http://localhost:9090/patient/getPatientById/${patientId}`)
+      .then((response) => {
+        console.log("patientDetail", response.data);
+        setPatientDetail(response.data);
+        console.log("patients", patientDetail);
+      })
+      .catch((error) => {
+        console.log("error:", error);
+      });
+  };
 
   async function fetchData() {
-
     const data = {
       consultationDate: new Date(),
       observation: observation,
@@ -95,17 +97,18 @@ function Prescription() {
       doctorName: "Aakanksha",
       doctorId: doctorDetails.doctorId,
       patientName: patientDetail.firstName,
-      patientId: patientId
-    }
+      patientId: patientId,
+    };
 
     // console.log(data);
     await axios
       .post("http://localhost:9090/prescription/addPrescription", data)
       .then((response) => {
-        console.log("inside post prescription api")
+        console.log("inside post prescription api");
         console.log(response.data);
-      }).catch((error)=>{
-        console.log("error",error)
+      })
+      .catch((error) => {
+        console.log("error", error);
       });
   }
   const submitHandler = async (event) => {
@@ -118,30 +121,38 @@ function Prescription() {
       doctorName: "Aakanksha",
       doctorId: doctorDetails.doctorId,
       patientName: patientDetail.firstName,
-      patientId: patientId
-    }
+      patientId: patientId,
+    };
 
     console.log("form updated data", data);
     await axios
       .post("http://localhost:9090/prescription/addPrescription", data)
       .then((response) => {
-        console.log("inside post prescription api")
+        console.log("inside post prescription api");
         console.log(response.data);
-        navigate(`/doctor`)
-      }).catch((error)=>{
-        console.log("error",error)
-      });   
+        navigate(`/doctor`);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
   };
-  
+  const handleFollowUp = () => {
+    setFollowUp(true);
+    setValue(new Date());
+  };
   useEffect(() => {
     fetchPatientDetail();
-  },[]);
+  }, []);
 
   return (
     <>
       {/* <DoctorNavbar /> */}
       <div className="container">
-        <Form onSubmit={(event) => {submitHandler(event)}}>
+        <Form
+          onSubmit={(event) => {
+            submitHandler(event);
+          }}
+        >
           {/* This code will be used later */}
           {/* ********************************** */}
           {/* {inputFeilds.map((input,index)=>{
@@ -161,21 +172,17 @@ function Prescription() {
           })}
           <button onClick={addFields}>Add More..</button> */}
           {/* **************************************** */}
-           <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Patient ID</Form.Label>
-            <Form.Control
-              name="patientId"
-              defaultValue={patientId}
-              disabled
-            />
+            <Form.Control name="patientId" defaultValue={patientId} disabled />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Patient Name</Form.Label>
             <Form.Control
               name="patientName"
-              defaultValue ={patientDetail.firstName}
-              readOnly
+              value={patientDetail.firstName}
+              disabled
             />
           </Form.Group>
 
@@ -210,22 +217,32 @@ function Prescription() {
               onChange={handleChangeAdvice}
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DesktopDatePicker
-                label="Follow up"
-                inputFormat="DD/MM/YYYY"
-                value={value}
-                onChange={handleChangeTime}
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </LocalizationProvider>
-          </Form.Group>
+
+          {followUp ? (
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DesktopDatePicker
+                  label="Follow up"
+                  inputFormat="DD/MM/YYYY"
+                  value={value}
+                  onChange={handleChangeTime}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+            </Form.Group>
+          ) : (
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              {/* <Form.Label>Follow Up</Form.Label> */}
+              <Button variant="secondary" onClick={handleFollowUp}>
+                Add Follow-Up
+              </Button>
+            </Form.Group>
+          )}
 
           <Button variant="primary" type="submit">
             Submit
-        </Button>
-        </Form> 
+          </Button>
+        </Form>
       </div>
     </>
   );
