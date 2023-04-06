@@ -13,6 +13,13 @@ import {
 import { useEffect } from "react";
 import "./PatientStyle.css";
 import { Input } from "@mui/material";
+import {
+  faPhone,
+  faPhoneAlt,
+  faPhoneFlip,
+  faPhoneSquare,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function PatientWaitingArea() {
   const appointmentId = localStorage.getItem("appointmentId");
@@ -22,10 +29,8 @@ function PatientWaitingArea() {
   const navigate = useNavigate();
 
   const handleJoinRoom = useCallback(() => {
-
     navigate(`/patient/patientvdocall`);
-  }, [navigate, roomCode])
-
+  }, [navigate, roomCode]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,19 +48,18 @@ function PatientWaitingArea() {
   return (
     <div>
       <NavbarHome />
-      <h1 className="text-center">This is the waiting area...</h1>
-      <Container
-        className="main-div card m-2 p-3"
-        style={{ justifyContent: "center", alignItems: "center" }}
-      >
-        <div className="waiting-number">
-          {count ? <h1>{count}</h1> : <h1>0</h1>}
+      <Container className="mt-3 p-3 card d-flex justify-content-center align-items-center">
+        <h1 className="text-center">This is the waiting area...</h1>
+        <div className="m-2 p-2 card">
+          {count ? (
+            <h3>Patient before you - {count}</h3>
+          ) : (
+            <h3>Patient before you - 0</h3>
+          )}
         </div>
         <div className="vdo">
-
-          <Button variant="secondary" onClick={handleJoinRoom}>
-
-            Call Doctor
+          <Button variant="success" onClick={handleJoinRoom}>
+            {<FontAwesomeIcon icon={faPhone} />} Call Doctor
           </Button>
         </div>
       </Container>

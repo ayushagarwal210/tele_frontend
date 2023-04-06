@@ -9,6 +9,8 @@ import "react-phone-number-input/style.css";
 import axios from "axios";
 import NavbarHome from "../Components/NavbarHome";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserEdit } from "@fortawesome/free-solid-svg-icons";
 
 function PatientUpdateProfile() {
   const patientDetails = JSON.parse(localStorage.getItem("patientDetails"));
@@ -210,12 +212,12 @@ function PatientUpdateProfile() {
           <Row className="mb-3">
             <Form.Group as={Col} controlID="formGridButtons">
               <Button
-                variant="primary"
+                variant="success"
                 type="submit"
                 className="sendbutton register"
                 onClick={handleSubmit}
               >
-                Update
+                {<FontAwesomeIcon icon={faUserEdit} />} Update
               </Button>
             </Form.Group>
           </Row>
