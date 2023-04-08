@@ -33,10 +33,12 @@ function Prescription() {
     data.splice(index, 1);
     setInputFeilds(data);
   };
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState("");
 
   const handleChangeTime = (newValue) => {
-    setValue(newValue);
+    console.log(newValue.$d);
+    setValue(newValue.$d);
+    console.log(value);
   };
 
   const patientId = localStorage.getItem("patientId");
@@ -88,29 +90,30 @@ function Prescription() {
       });
   };
 
-  async function fetchData() {
-    const data = {
-      consultationDate: new Date(),
-      observation: observation,
-      medicine: medicine,
-      remark: advice,
-      doctorName: "Aakanksha",
-      doctorId: doctorDetails.doctorId,
-      patientName: patientDetail.firstName,
-      patientId: patientId,
-    };
+  // async function fetchData() {
+  //   const data = {
+  //     consultationDate: new Date(),
+  //     observation: observation,
+  //     medicine: medicine,
+  //     remark: advice,
+  //     doctorName: "Aakanksha",
+  //     doctorId: doctorDetails.doctorId,
+  //     patientName: patientDetail.firstName,
+  //     patientId: patientId,
+  //     followUpDate: value,
+  //   };
 
-    // console.log(data);
-    await axios
-      .post("http://localhost:9090/prescription/addPrescription", data)
-      .then((response) => {
-        console.log("inside post prescription api");
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log("error", error);
-      });
-  }
+  //   // console.log(data);
+  //   await axios
+  //     .post("http://localhost:9090/prescription/addPrescription", data)
+  //     .then((response) => {
+  //       console.log("inside post prescription api");
+  //       console.log(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log("error", error);
+  //     });
+  // }
   const submitHandler = async (event) => {
     event.preventDefault();
     const data = {
@@ -122,6 +125,7 @@ function Prescription() {
       doctorId: doctorDetails.doctorId,
       patientName: patientDetail.firstName,
       patientId: patientId,
+      followUpDate: value
     };
 
     console.log("form updated data", data);
@@ -225,7 +229,9 @@ function Prescription() {
                   label="Follow up"
                   inputFormat="DD/MM/YYYY"
                   value={value}
-                  onChange={handleChangeTime}
+                  onChange={(e) => {
+                  setValue(e.$d)
+                }}
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
