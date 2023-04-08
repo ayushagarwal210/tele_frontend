@@ -107,6 +107,7 @@ export default function PatientHomePage() {
   }
 
   useEffect(() => {
+    // patientDetails = JSON.parse(localStorage.getItem("patientDetails"));
     fetchData();
     fetchPrevAppointment();
     fetchFollowUp();

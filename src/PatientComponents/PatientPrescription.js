@@ -51,6 +51,11 @@ export default function PatientPrescription() {
   return (
     <>
       <NavbarHome />
+      {/* <a href="/patient">
+        <Button variant="primary" type="submit">
+          Back
+        </Button>
+      </a> */}
       {/* <div className="card container"> */}
       <div className="container card mt-4 d-flex ">
         <div className="card-body ">
