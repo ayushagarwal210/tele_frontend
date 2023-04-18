@@ -11,6 +11,18 @@ import axios from "axios";
 // import DoctorNavbar from "./DoctorNavbar";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { Dropdown } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faAdd,
+  faCalendarCheck,
+  faCalendarDay,
+  faCalendarDays,
+  faDeleteLeft,
+  faMinusCircle,
+  faRemove,
+  faRemoveFormat,
+} from "@fortawesome/free-solid-svg-icons";
 
 function Prescription() {
   const navigate = useNavigate();
@@ -33,6 +45,7 @@ function Prescription() {
     data.splice(index, 1);
     setInputFeilds(data);
   };
+  console.log(inputFeilds);
   const [value, setValue] = useState("");
 
   const handleChangeTime = (newValue) => {
@@ -76,7 +89,19 @@ function Prescription() {
 
   const { uid } = useParams();
   const [count, setCount] = useState(0);
+  const [allMedicineData, setAllMedicineData] = useState([]);
 
+  const getAllMedicine = async () => {
+    await axios
+      .get("https://rxnav.nlm.nih.gov/REST/displaynames.json")
+      .then((response) => {
+        setAllMedicineData(response.data.displayTermsList.term);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  // console.log(allMedicineData);
   const fetchPatientDetail = async () => {
     await axios
       .get(`http://localhost:9090/patient/getPatientById/${patientId}`)
@@ -89,43 +114,25 @@ function Prescription() {
         console.log("error:", error);
       });
   };
+  const medicineString = inputFeilds
+    .map((item) => {
+      return `Medicine: ${item.medicine} --> Dosage: ${item.dosage}`;
+    })
+    .join("\n");
 
-  // async function fetchData() {
-  //   const data = {
-  //     consultationDate: new Date(),
-  //     observation: observation,
-  //     medicine: medicine,
-  //     remark: advice,
-  //     doctorName: "Aakanksha",
-  //     doctorId: doctorDetails.doctorId,
-  //     patientName: patientDetail.firstName,
-  //     patientId: patientId,
-  //     followUpDate: value,
-  //   };
+  // console.log(medicineString);
 
-  //   // console.log(data);
-  //   await axios
-  //     .post("http://localhost:9090/prescription/addPrescription", data)
-  //     .then((response) => {
-  //       console.log("inside post prescription api");
-  //       console.log(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log("error", error);
-  //     });
-  // }
   const submitHandler = async (event) => {
     event.preventDefault();
     const data = {
       consultationDate: new Date(),
       observation: observation,
-      medicine: medicine,
+      medicine: medicineString,
       remark: advice,
-      doctorName: "Aakanksha",
       doctorId: doctorDetails.doctorId,
       patientName: patientDetail.firstName,
       patientId: patientId,
-      followUpDate: value
+      followUpDate: value,
     };
 
     console.log("form updated data", data);
@@ -146,8 +153,8 @@ function Prescription() {
   };
   useEffect(() => {
     fetchPatientDetail();
+    getAllMedicine();
   }, []);
-
   return (
     <>
       {/* <DoctorNavbar /> */}
@@ -157,25 +164,6 @@ function Prescription() {
             submitHandler(event);
           }}
         >
-          {/* This code will be used later */}
-          {/* ********************************** */}
-          {/* {inputFeilds.map((input,index)=>{
-            return(
-              <div key={index}>
-              <Form.Group className="mt-2 mb-3 input-group" controlId="formBasicEmail">
-            <Form.Label>Medicine -</Form.Label>
-            <Form.Control  name="medicine" value={input.medicine}  onChange={ (event)=> handleFormChange(index,event)}/>
-            <span className="input-group-addon m-2"></span>
-            <Form.Label>Dosage -</Form.Label>
-            <Form.Control  name="dosage" value={input.dosage} onChange={(event)=>  handleFormChange(index,event)} />
-          <button onClick={() => removeFields(index)}>Remove</button>
-          </Form.Group>
-          
-          </div>
-            )
-          })}
-          <button onClick={addFields}>Add More..</button> */}
-          {/* **************************************** */}
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Patient ID</Form.Label>
             <Form.Control name="patientId" defaultValue={patientId} disabled />
@@ -190,20 +178,81 @@ function Prescription() {
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Medicine and Dosage</Form.Label>
-            <Form.Control
-              name="medicine"
-              value={medicine}
-              onChange={handleChangeMedicine}
-            />
-            {/* <input 
-              type="text"
-              onChange={(e) => setMedicine(e.target.value)}
-              value={medicine}
-            /> */}
-          </Form.Group>
+          {inputFeilds.map((input, index) => {
+            return (
+              <div key={index}>
+                <Form.Group
+                  className="card p-2 mt-2 mb-3 "
+                  controlId="formBasicEmail"
+                >
+                  <Form.Label>Dosage -</Form.Label>
+                  <Form.Control
+                    name="dosage"
+                    value={input.dosage}
+                    onChange={(event) => handleFormChange(index, event)}
+                  />
+                  <Form.Label>Medicine -</Form.Label>
+                  <Form.Control
+                    name="medicine"
+                    value={input.medicine}
+                    onChange={(event) => handleFormChange(index, event)}
+                  />
 
+                  <Button
+                    variant="danger"
+                    className="mt-2"
+                    onClick={() => removeFields(index)}
+                  >
+                    {<FontAwesomeIcon icon={faMinusCircle} />} Remove
+                  </Button>
+                </Form.Group>
+                <Dropdown
+                  style={{
+                    position: "absolute",
+                    backgroundColor: "white", // Set background color to white
+                    borderRadius: "4px", // Set border radius to create rounded corners
+                    boxShadow: "0px 0px 4px rgba(0, 0, 0, 0.1)", // Add a box shadow for depth
+                    padding: "3px", // Add padding to create spacing between items
+                    zIndex: "9999",
+                    maxWidth: "35%",
+                    maxHeight: "35%",
+                    overflow: "auto",
+                  }}
+                >
+                  {allMedicineData
+                    .filter((item) => {
+                      const searchItem = input.medicine.toLowerCase();
+                      const medicine = item.toLowerCase();
+                      return (
+                        medicine.indexOf(searchItem) > -1 &&
+                        searchItem != medicine &&
+                        searchItem.length >= 1
+                      );
+                    })
+                    .slice(0, 10)
+                    .map((item) => (
+                      <Dropdown.Item
+                        key={item}
+                        onClick={() => {
+                          const updatedInputFields = [...inputFeilds];
+                          updatedInputFields[index].medicine = item;
+                          setInputFeilds(updatedInputFields);
+                        }}
+                        style={{
+                          // Add additional styling for each item
+                          padding: "5px 10px", // Add padding to create spacing within each item
+                        }}
+                      >
+                        {item}
+                      </Dropdown.Item>
+                    ))}
+                </Dropdown>
+              </div>
+            );
+          })}
+          <Button onClick={addFields} className="mt-2">
+            {<FontAwesomeIcon icon={faAdd} />} Add More..
+          </Button>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Observation</Form.Label>
             <Form.Control
@@ -212,7 +261,6 @@ function Prescription() {
               onChange={handleChangeObservation}
             />
           </Form.Group>
-
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Remarks</Form.Label>
             <Form.Control
@@ -221,17 +269,16 @@ function Prescription() {
               onChange={handleChangeAdvice}
             />
           </Form.Group>
-
           {followUp ? (
-            <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Group className="mb-3 mt-3" controlId="formBasicEmail">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DesktopDatePicker
                   label="Follow up"
                   inputFormat="DD/MM/YYYY"
                   value={value}
                   onChange={(e) => {
-                  setValue(e.$d)
-                }}
+                    setValue(e.$d);
+                  }}
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
@@ -240,12 +287,12 @@ function Prescription() {
             <Form.Group className="mb-3" controlId="formBasicEmail">
               {/* <Form.Label>Follow Up</Form.Label> */}
               <Button variant="secondary" onClick={handleFollowUp}>
-                Add Follow-Up
+                {<FontAwesomeIcon icon={faCalendarDay} />} Add Follow-Up
               </Button>
             </Form.Group>
           )}
 
-          <Button variant="primary" type="submit">
+          <Button variant="primary" type="submit" className="mb-2">
             Submit
           </Button>
         </Form>
