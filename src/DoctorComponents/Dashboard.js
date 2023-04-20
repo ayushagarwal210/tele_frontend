@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import { dialogTitleClasses } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDatabase, faUserDoctor } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
+import i18next from "i18next";
 
 function Dashboard() {
   console.log("data", new Date());
@@ -52,13 +54,18 @@ function Dashboard() {
   // }
 
   // console.log(info);
+  const { t } = useTranslation();
   return (
     <>
       <DoctorNavbar />
       {doctorDetails ? (
         <div className="doctor-dashboard">
+          <button onClick={() => i18next.changeLanguage("en")}>English</button>
+          <button onClick={() => i18next.changeLanguage("hi")}>Hindi</button>
           <div className="container text-center m-3">
-            <h2>{<FontAwesomeIcon icon={faUserDoctor} />} Welcome</h2>
+            <h2>
+              {<FontAwesomeIcon icon={faUserDoctor} />} {t("Welcome")}
+            </h2>
             {/* <Button onClick={generatePrescription(this, info.doctorId)}>
           Prescription
         </Button> */}

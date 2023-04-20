@@ -11,7 +11,7 @@ import axios from "axios";
 // import DoctorNavbar from "./DoctorNavbar";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { Dropdown } from "react-bootstrap";
+import { Dropdown, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAdd,
@@ -23,6 +23,8 @@ import {
   faRemove,
   faRemoveFormat,
 } from "@fortawesome/free-solid-svg-icons";
+import PatientMedicalHistory from "./PatientMedicalHistory";
+import DoctorLogin from "./DoctorLogin";
 
 function Prescription() {
   const navigate = useNavigate();
@@ -45,7 +47,6 @@ function Prescription() {
     data.splice(index, 1);
     setInputFeilds(data);
   };
-  console.log(inputFeilds);
   const [value, setValue] = useState("");
 
   const handleChangeTime = (newValue) => {
@@ -104,7 +105,7 @@ function Prescription() {
   // console.log(allMedicineData);
   const fetchPatientDetail = async () => {
     await axios
-      .get(`http://localhost:9090/patient/getPatientById/${patientId}`)
+      .get(`http://localhost:9090/patient/getPatient/${patientId}`)
       .then((response) => {
         console.log("patientDetail", response.data);
         setPatientDetail(response.data);
@@ -155,6 +156,7 @@ function Prescription() {
     fetchPatientDetail();
     getAllMedicine();
   }, []);
+
   return (
     <>
       {/* <DoctorNavbar /> */}
@@ -296,6 +298,9 @@ function Prescription() {
             Submit
           </Button>
         </Form>
+
+        {/* *********************Patient Medical History****************** */}
+        <PatientMedicalHistory patientDetail={patientDetail} />
       </div>
     </>
   );

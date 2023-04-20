@@ -19,64 +19,76 @@ import DoctorConsultationPage from "./DoctorComponents/DoctorConsultationPage";
 import PatientLoginPage from "./PatientComponents/PatientLoginPage";
 import DoctorLoginPage from "./DoctorComponents/DoctorLoginPage";
 
-import DoctorVideoCallPage from "./DoctorComponents/DoctorVideoCallPage"
-import PatientVideoCallPage from "./PatientComponents/PatientVideoCallPage"
+import DoctorVideoCallPage from "./DoctorComponents/DoctorVideoCallPage";
+import PatientVideoCallPage from "./PatientComponents/PatientVideoCallPage";
 import { UserProvider } from "./providers/Provider";
 
 import PatientUpdateProfile from "./PatientComponents/PatientUpdateProfile";
 import DoctorProfile from "./DoctorComponents/DoctorProfile";
-
+import { Suspense } from "react";
 
 function App() {
   return (
     <div>
-
-      <div style={{ position: "relative", minHeight: "100vh" }}>
-        <div style={{ paddingBottom: "50px" }}>
-          {/* Content of the page */}
-          <BrowserRouter>
-          <UserProvider>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/patient" element={<PatientHomePage />} />
-              <Route
-                path="/patient/prescription"
-                element={<PatientPrescription />}
-              />
-              <Route
-                path="/patient/update-profile"
-                element={<PatientUpdateProfile />}
-              />
-              <Route path="/patient/login" element={<PateintLogin />} />
-               <Route path="/patient/patientvdocall" element={<PatientVideoCallPage />} />
-              {/* <Route path="/patient/appointment" element={<PatientAppointment />} /> */}
-              <Route
-                path="/patient/waitingArea"
-                element={<PatientWaitingArea />}
-              />
-              <Route path="/patient/logins" element={<PatientLoginPage />} />
-              {/* <Route
+      <Suspense fallback={null}>
+        <div style={{ position: "relative", minHeight: "100vh" }}>
+          <div style={{ paddingBottom: "50px" }}>
+            {/* Content of the page */}
+            <BrowserRouter>
+              <UserProvider>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/patient" element={<PatientHomePage />} />
+                  <Route
+                    path="/patient/prescription"
+                    element={<PatientPrescription />}
+                  />
+                  <Route
+                    path="/patient/update-profile"
+                    element={<PatientUpdateProfile />}
+                  />
+                  <Route path="/patient/login" element={<PateintLogin />} />
+                  <Route
+                    path="/patient/patientvdocall"
+                    element={<PatientVideoCallPage />}
+                  />
+                  {/* <Route path="/patient/appointment" element={<PatientAppointment />} /> */}
+                  <Route
+                    path="/patient/waitingArea"
+                    element={<PatientWaitingArea />}
+                  />
+                  <Route
+                    path="/patient/logins"
+                    element={<PatientLoginPage />}
+                  />
+                  {/* <Route
                 path="/patient/registration"
                 element={<PatientRegistration />}
               /> */}
- <Route path="/doctor/doctorvdocall" element={<DoctorVideoCallPage />} />
-              <Route path="/doctor/logins" element={<DoctorLoginPage />} />
-              <Route path="/doctor/login" element={<DoctorLogin />} />
-              <Route path="/doctor" element={<Dashboard />} />
-              <Route path="/doctor/prescription" element={<Prescription />} />
-              <Route path="/doctor/profile" element={<DoctorProfile />} />
-              {/* <Route path="/room/:roomId" element={<VideoCallPage />} /> */}
-              <Route
-                path="/doctor/consultationpage"
-                element={<DoctorConsultationPage />}
-              />
-            </Routes>
-             </UserProvider>
-          </BrowserRouter>
+                  <Route
+                    path="/doctor/doctorvdocall"
+                    element={<DoctorVideoCallPage />}
+                  />
+                  <Route path="/doctor/logins" element={<DoctorLoginPage />} />
+                  <Route path="/doctor/login" element={<DoctorLogin />} />
+                  <Route path="/doctor" element={<Dashboard />} />
+                  <Route
+                    path="/doctor/prescription"
+                    element={<Prescription />}
+                  />
+                  <Route path="/doctor/profile" element={<DoctorProfile />} />
+                  {/* <Route path="/room/:roomId" element={<VideoCallPage />} /> */}
+                  <Route
+                    path="/doctor/consultationpage"
+                    element={<DoctorConsultationPage />}
+                  />
+                </Routes>
+              </UserProvider>
+            </BrowserRouter>
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
-
+      </Suspense>
     </div>
   );
 }
