@@ -26,6 +26,7 @@ import {
   faRemove,
   faRemoveFormat,
 } from "@fortawesome/free-solid-svg-icons";
+import GoogleEventComponent from "../GoogleEventComponent";
 
 export default function PatientHomePage() {
   const [department, setDepartment] = useState();
@@ -206,6 +207,10 @@ export default function PatientHomePage() {
                       <td>{p.departmentName}</td>
                       <td>{p.doctorName}</td>
                       <td>{p.observation}</td>
+                      {/* ***********************Adding to google calendar*************************** */}
+                      <td>
+                        <GoogleEventComponent followUp={p.followUpDate} />
+                      </td>
                     </tr>
                   ))
                 ) : (
